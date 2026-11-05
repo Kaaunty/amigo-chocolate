@@ -155,7 +155,7 @@
 .config-input:focus {
   outline: none;
   border-color: var(--color-gold);
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+  box-shadow: 0 0 0 3px rgba(229, 9, 32, 0.1);
 }
 
 .config-button {
@@ -464,7 +464,7 @@
 .modal-input:focus {
   outline: none;
   border-color: var(--color-gold);
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+  box-shadow: 0 0 0 3px rgba(229, 9, 32, 0.1);
 }
 
 .modal-input:disabled {

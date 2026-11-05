@@ -85,15 +85,15 @@ const Home = () => {
     <div className="home-container">
       <div className="home-backgroud"> </div>
       <div className="home-content">
-        <div className="header-wrapper">
-          
-  </div>
+        <div className="brand-banner">
+          <img src="/banner.png" alt="Amigo Chocolate - Rainha das Sete" className="brand-banner-img" />
+        </div>
   <div className="home-header">
     <h1 className="home-title">
       <span className="title-icon">
         Amigo Chocolate
       </span>
-      <span className="title-subtitle">Natal dos Ferreira</span>
+      <span className="title-subtitle">Rainha das Sete</span>
     </h1>
 
     <p className="home-description">

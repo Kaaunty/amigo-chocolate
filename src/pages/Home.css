@@ -334,43 +334,6 @@
     width: 100%;
   }
 }
-.header-wrapper {
-  position: relative;
-  /* make the header full-bleed (edge-to-edge) while kept inside the centered container */
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
-  width: 1595px;
-  min-height: 200px;
-  /* ou o tamanho que quiser */
-
-  background-image: url('/logo3.png');
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  padding: 60px 20px;
-  box-sizing: border-box;
-}
-
-@media (max-width: 600px) {
-  .header-wrapper {
-    position: relative;
-      /* make the header full-bleed (edge-to-edge) while kept inside the centered container */
-      left: -33%;
-
-background-image: url('/logo2.png');
-background-position: center;
-    max-width: 800px;
-  }
-
-  
-}
 /* Película / overlay */
 .header-overlay {
   position: absolute;
@@ -389,4 +352,22 @@ background-position: center;
   /* fica acima do overlay */
   text-align: center;
   color: white;
+}
+
+/* Banner Amigo Chocolate - Rainha das Sete */
+.brand-banner {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 8px 16px rgba(107, 45, 22, 0.25);
+}
+
+.brand-banner-img {
+  display: block;
+  width: 100%;
+  max-width: 720px;
+  height: auto;
 }

@@ -9,7 +9,7 @@ const Rules = () => {
             <span className="title-icon">📋</span>
             Regras do Jogo
           </h1>
-          <p className="rules-subtitle">Amigo Chocolate - Natal dos Ferreira</p>
+          <p className="rules-subtitle">Amigo Chocolate - Rainha das Sete</p>
         </div>
 
         <div className="rules-section">
