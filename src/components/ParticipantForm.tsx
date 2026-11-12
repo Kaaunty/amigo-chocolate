@@ -8,17 +8,11 @@ interface ParticipantFormProps {
 
 const ParticipantForm = ({ onSuccess }: ParticipantFormProps) => {
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [email] = useState(""); // e-mail opcional: campo desativado por enquanto
   const [preferredChocolate, setPreferredChocolate] = useState("");
   const [dislikes, setDislikes] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
-  const validateEmail = (email: string): boolean => {
-    // Validação básica de e-mail corporativo
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();

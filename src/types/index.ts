@@ -34,9 +34,15 @@ export interface RegisterParticipantResponse {
   link: string;
 }
 
+// Dados do par expostos publicamente (sem token, e-mail ou vínculo do par)
+export type MatchedParticipant = Pick<
+  Participant,
+  "id" | "name" | "preferredChocolate" | "dislikes"
+>;
+
 export interface ParticipantResponse {
   participant: Participant;
-  matchedParticipant?: Participant;
+  matchedParticipant?: MatchedParticipant;
 }
 
 export interface AdminLoginRequest {

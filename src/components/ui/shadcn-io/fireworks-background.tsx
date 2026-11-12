@@ -221,6 +221,7 @@ export function FireworksBackground({
       fireworksRef.current = [];
       particlesRef.current = [];
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- reinicia só ao ativar/desativar
   }, [active]);
 
 
