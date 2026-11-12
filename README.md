@@ -103,6 +103,22 @@ Fora de desenvolvimento (`npm start` = produção; também vale `NODE_ENV` ausen
 
 **Atrás de proxy reverso:** defina `TRUST_PROXY=true` para que o rate limit do login use o IP real (`X-Forwarded-For`).
 
+## 🐳 Docker
+
+O `docker-compose.yml` sobe dois serviços: `web` (nginx com o build do Vite, que também encaminha `/api` para a API) e `api` (Node + SQLite, sem porta exposta no host).
+
+```bash
+cp .env.example .env     # defina ADMIN_PASSWORD, JWT_SECRET (mín. 16 caracteres) e PUBLIC_URL
+docker compose up -d --build
+```
+
+O site fica em `http://localhost:3000` (ou em `WEB_PORT`). O compose não sobe sem `ADMIN_PASSWORD` e `JWT_SECRET`.
+
+- **Dados:** o SQLite fica no volume `app-data` (`/data/app.db`) e sobrevive a `docker compose down`. **Não use** `down -v`, que apaga o volume. Para backup: `docker compose cp api:/data/app.db ./backup.db`.
+- **Proxy:** `TRUST_PROXY=true` já vem ativo no compose, pois o nginx fica à frente da API. Se houver outro proxy na frente (ex.: Coolify/Traefik), ajuste conforme a topologia.
+- **`PUBLIC_URL`:** use a URL pública real (com `https://`), pois ela entra nos links enviados por e-mail.
+- **Tempo de resposta do sorteio:** o nginx aceita até 300 s, porque o sorteio envia todos os e-mails antes de responder.
+
 ## 🧪 Testes
 
 ```bash
@@ -131,7 +147,9 @@ src/                      # Frontend (React + Vite)
 ├── App.tsx               # Componente principal com rotas
 └── main.tsx              # Entry point
 
-server/                   # Backend (Express + SQLite)
+Dockerfile, nginx.conf, docker-compose.yml   # Front (nginx) e orquestração
+
+server/                   # Backend (Express + SQLite; server/Dockerfile)
 ├── src/
 │   ├── index.ts          # Entry point: abre o banco e sobe o servidor
 │   ├── app.ts            # Criação do app Express, CORS e tratamento de erros
