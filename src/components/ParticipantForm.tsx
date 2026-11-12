@@ -6,9 +6,14 @@ interface ParticipantFormProps {
   onSuccess: (link: string) => void;
 }
 
+const validateEmail = (email: string): boolean => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
 const ParticipantForm = ({ onSuccess }: ParticipantFormProps) => {
   const [name, setName] = useState("");
-  const [email] = useState(""); // e-mail opcional: campo desativado por enquanto
+  const [email, setEmail] = useState("");
   const [preferredChocolate, setPreferredChocolate] = useState("");
   const [dislikes, setDislikes] = useState("");
   const [loading, setLoading] = useState(false);
@@ -24,15 +29,15 @@ const ParticipantForm = ({ onSuccess }: ParticipantFormProps) => {
       return;
     }
 
-    // if (!email.trim()) {
-    //   setError("Por favor, informe seu e-mail corporativo.");
-    //   return;
-    // }
+    if (!email.trim()) {
+      setError("Por favor, informe seu e-mail corporativo.");
+      return;
+    }
 
-    // if (!validateEmail(email)) {
-    //   setError("Por favor, informe um e-mail válido.");
-    //   return;
-    // }
+    if (!validateEmail(email)) {
+      setError("Por favor, informe um e-mail válido.");
+      return;
+    }
 
     setLoading(true);
 
@@ -73,7 +78,7 @@ const ParticipantForm = ({ onSuccess }: ParticipantFormProps) => {
         />
       </div>
 
-      {/* <div className="form-group">
+      <div className="form-group">
         <label htmlFor="email" className="form-label">
           E-mail Corporativo
         </label>
@@ -87,7 +92,7 @@ const ParticipantForm = ({ onSuccess }: ParticipantFormProps) => {
           disabled={loading}
           required
         />
-      </div> */}
+      </div>
 
       <div className="form-group">
         <label htmlFor="preferredChocolate" className="form-label">

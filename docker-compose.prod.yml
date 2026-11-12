@@ -15,7 +15,7 @@ services:
       JWT_SECRET: ${JWT_SECRET:?Defina JWT_SECRET (minimo 16 caracteres)}
       PUBLIC_URL: ${PUBLIC_URL:?Defina PUBLIC_URL com a URL publica, ex. https://chocolate.rainhadassete.com.br}
       CORS_ORIGIN: ${CORS_ORIGIN:-${PUBLIC_URL}}
-      EMAIL_API_URL: ${EMAIL_API_URL:-https://api.erp.rainhadassete.com/api/Email/enviar}
+      EMAIL_API_URL: ${EMAIL_API_URL:-https://api-erp.rainhadassete.com.br/Email/enviar}
       EMAIL_SEND_DELAY_MS: ${EMAIL_SEND_DELAY_MS:-0}
       # O nginx do serviço "web" fica à frente da API (usa X-Forwarded-For no rate limit)
       TRUST_PROXY: "true"
