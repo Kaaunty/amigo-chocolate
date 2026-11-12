@@ -1,0 +1,13 @@
+node_modules
+server/node_modules
+dist
+server/dist
+server/data
+.env
+.env.*
+!.env.example
+.git
+.orchestra
+.playwright-mcp
+Rainha das Sete - Manual de Identidade Visual
+*.log
