@@ -126,9 +126,10 @@ Para não compilar nada no servidor de produção, o GitHub Actions (`.github/wo
 O Coolify usa o `docker-compose.prod.yml` (só `image:`, sem `build` e sem porta no host): o deploy apenas baixa as imagens.
 
 - **Coolify:** em *Docker Compose Location* use `/docker-compose.prod.yml`. Variáveis obrigatórias: `ADMIN_PASSWORD`, `JWT_SECRET` e `PUBLIC_URL`. O domínio vai no serviço `web` (porta 80).
-- **Primeira publicação:** o GHCR cria os pacotes como privados. Em GitHub → Packages → `amigo-chocolate-api` e `amigo-chocolate-web` → *Package settings* → *Change visibility* → **Public** (o conteúdo é o mesmo do repositório público). Alternativa: `docker login ghcr.io` no servidor com um token `read:packages`.
+- **Pacotes no GHCR:** os pacotes `amigo-chocolate-api` e `amigo-chocolate-web` herdam a visibilidade do repositório (público), então o servidor baixa as imagens sem login. Se o repositório virar privado, use `docker login ghcr.io` no servidor com um token `read:packages`.
 - **Rollback:** defina `IMAGE_TAG=sha-<commit>` no Coolify e faça o deploy para voltar a uma versão anterior.
-- **Fluxo:** merge na `main` → esperar o workflow *Docker* terminar → redeploy no Coolify (leva segundos, sem build).
+- **Deploy manual (de propósito):** o deploy automático por push fica **desligado** no Coolify. Ligado, ele reagiria ao push antes de o workflow publicar a imagem e subiria a versão anterior. Também evita guardar no GitHub um token do Coolify, que dá acesso ao servidor de produção.
+- **Fluxo:** merge na `main` → esperar o workflow *Docker* ficar verde (~1 min) → clicar em *Deploy* no Coolify (~1 min, sem build).
 
 ## 🧪 Testes
 
