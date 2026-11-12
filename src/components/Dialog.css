@@ -1,0 +1,202 @@
+/*
+  Diálogo modal, no sistema do Manual de Identidade Visual do painel admin
+  (Admin.css): vermelho #E30613, preto #0D181C, branco e Inter. Usa as
+  variáveis globais de espaçamento, raio, sombra e transição de global.css.
+*/
+
+.ui-dialog {
+  --dl-red: #e30613;
+  --dl-red-deep: #a8040e;
+  --dl-ink: #0d181c;
+  --dl-ink-soft: #24343a;
+  --dl-muted: #4a5559;
+
+  /* Zera o visual padrão do <dialog> nativo; o cartão é que aparece */
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--dl-ink);
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+/* Centraliza o cartão só quando aberto (o <dialog> fechado fica oculto) */
+.ui-dialog[open] {
+  display: grid;
+  place-items: center;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  margin: 0;
+  padding: var(--spacing-xs);
+  box-sizing: border-box;
+}
+
+.ui-dialog::backdrop {
+  background: rgba(13, 24, 28, 0.6);
+}
+
+.ui-dialog[open]::backdrop {
+  animation: dialog-fade-in 0.2s ease-out;
+}
+
+.ui-dialog .dialog-card {
+  box-sizing: border-box;
+  width: min(92vw, 28rem);
+  padding: var(--spacing-md);
+  background: #fff;
+  border-top: 8px solid var(--dl-ink);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.ui-dialog[open] .dialog-card {
+  animation: dialog-card-in var(--transition-normal);
+}
+
+.ui-dialog.tone-danger .dialog-card,
+.ui-dialog.tone-error .dialog-card {
+  border-top-color: var(--dl-red);
+}
+
+.ui-dialog.tone-success .dialog-card {
+  border-top-color: var(--dl-ink);
+}
+
+.ui-dialog .dialog-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-xs);
+}
+
+.ui-dialog .dialog-icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  font-weight: 900;
+  color: #fff;
+  background: var(--dl-ink);
+  border-radius: 50%;
+}
+
+.ui-dialog.tone-danger .dialog-icon,
+.ui-dialog.tone-error .dialog-icon {
+  background: var(--dl-red);
+}
+
+.ui-dialog .dialog-title {
+  font-size: 1.35rem;
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--dl-ink);
+}
+
+.ui-dialog.tone-danger .dialog-title,
+.ui-dialog.tone-error .dialog-title {
+  color: var(--dl-red-deep);
+}
+
+.ui-dialog .dialog-message {
+  margin: 0 0 var(--spacing-md);
+  color: var(--dl-muted);
+  line-height: 1.5;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.ui-dialog .dialog-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--spacing-xs);
+}
+
+.ui-dialog .dialog-button {
+  padding: 0.7rem 1.25rem;
+  font: inherit;
+  font-weight: 900;
+  color: var(--dl-ink);
+  background: transparent;
+  border: 2px solid var(--dl-ink);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.ui-dialog .dialog-button:hover {
+  background: rgba(13, 24, 28, 0.08);
+}
+
+.ui-dialog .dialog-button.primary {
+  color: #fff;
+  background: var(--dl-ink);
+  border-color: var(--dl-ink);
+}
+
+.ui-dialog .dialog-button.primary:hover {
+  background: var(--dl-ink-soft);
+}
+
+.ui-dialog.tone-danger .dialog-button.primary,
+.ui-dialog.tone-error .dialog-button.primary {
+  background: var(--dl-red);
+  border-color: var(--dl-red);
+  box-shadow: 0 4px 0 var(--dl-red-deep);
+}
+
+.ui-dialog.tone-danger .dialog-button.primary:hover,
+.ui-dialog.tone-error .dialog-button.primary:hover {
+  background: #f01a27;
+}
+
+.ui-dialog .dialog-button:focus-visible {
+  outline: 3px solid var(--dl-red);
+  outline-offset: 3px;
+}
+
+@keyframes dialog-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes dialog-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Telas estreitas: botões empilhados, cada um em largura total */
+@media (max-width: 26rem) {
+  .ui-dialog .dialog-actions {
+    flex-direction: column;
+  }
+
+  .ui-dialog .dialog-button {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-dialog[open]::backdrop,
+  .ui-dialog[open] .dialog-card {
+    animation: none;
+  }
+
+  .ui-dialog .dialog-button {
+    transition: none;
+  }
+}

@@ -4,12 +4,20 @@ Site interativo para realização de sorteio entre colaboradores no estilo "Amig
 
 ## 🚀 Tecnologias
 
+**Frontend**
 - **React 18** - Biblioteca JavaScript para interfaces
 - **Vite** - Build tool e dev server
 - **TypeScript** - Tipagem estática
 - **React Router** - Roteamento
 - **Axios** - Cliente HTTP para chamadas de API
 - **React Icons** - Biblioteca de ícones
+
+**Backend (`server/`)**
+- **Node.js + Express 5** - API REST
+- **SQLite** via **better-sqlite3** - Banco de dados em arquivo local
+- **JWT** (jsonwebtoken) - Autenticação do painel admin
+- Envio de e-mails por API HTTP externa (`EMAIL_API_URL`)
+- **Vitest** + **supertest** - Testes do backend
 
 ## 📋 Funcionalidades
 
@@ -28,87 +36,138 @@ Site interativo para realização de sorteio entre colaboradores no estilo "Amig
 
 ## 🛠️ Instalação
 
-1. Instale as dependências:
+1. Instale as dependências do frontend (raiz) e do backend:
 ```bash
 npm install
+npm run server:install
 ```
 
-2. Configure a variável de ambiente:
+2. Configure o backend:
+```bash
+cp server/.env.example server/.env
+```
+
+Edite `server/.env` e defina, no mínimo:
+- `ADMIN_PASSWORD` - senha do painel admin (use um valor forte)
+- `JWT_SECRET` - segredo para assinar os tokens JWT (use um valor longo e aleatório)
+- `PUBLIC_URL` - URL pública do front (usada nos links enviados por e-mail)
+- `CORS_ORIGIN` - origem permitida no CORS (URL do front)
+- `TRUST_PROXY` - `true` apenas quando atrás de proxy reverso
+- `EMAIL_API_URL` - endpoint da API de envio de e-mails
+
+Outras variáveis (`PORT`, `DB_PATH`, `NODE_ENV`, `EMAIL_SEND_DELAY_MS`) estão descritas em `server/.env.example`. Nunca commite o `.env` com valores reais.
+
+3. Configure o frontend. Crie o `.env` na raiz:
 ```bash
 cp .env.example .env
 ```
 
-Edite o arquivo `.env` e configure a URL da API:
-```
-VITE_API_URL=http://localhost:3001/api
-```
+Em desenvolvimento, mantenha `VITE_API_URL=/api` (o proxy do Vite encaminha para o backend). Em produção, aponte para a URL pública da API, ex.: `VITE_API_URL=https://api.seudominio.com/api`.
 
-3. Adicione o logo da Rainha das Sete:
+4. Adicione o logo da Rainha das Sete:
    - Coloque o arquivo `logo.png` na pasta `public/`
    - O sistema usará um placeholder caso o arquivo não exista
 
 ## 🚀 Executando
 
-### Desenvolvimento
+Em desenvolvimento, use dois terminais:
+
+**Terminal 1 - backend** (porta 3001):
+```bash
+npm run server:dev
+```
+
+**Terminal 2 - frontend** (porta 3000, com proxy de `/api` para o backend):
 ```bash
 npm run dev
 ```
 
-O servidor de desenvolvimento estará disponível em `http://localhost:3000`
+O site estará disponível em `http://localhost:3000` e a API em `http://localhost:3001/api`.
 
-### Build para produção
+### Build e produção
+
+Frontend:
 ```bash
-npm run build
+npm run build      # tsc + vite build; gera dist/
+npm run preview    # serve a build para conferência local
 ```
 
-### Preview da build
+Backend:
 ```bash
-npm run preview
+npm --prefix server start   # roda com tsx e NODE_ENV=production
+```
+
+Fora de desenvolvimento (`npm start` = produção; também vale `NODE_ENV` ausente), `ADMIN_PASSWORD` e `JWT_SECRET` (mínimo 16 caracteres) são obrigatórios: o servidor não sobe sem eles. Só `npm run server:dev` e os testes usam defaults inseguros.
+
+**Banco de dados:** o SQLite fica em `server/data/app.db` (ou no caminho definido em `DB_PATH`). Faça backup periódico desse arquivo e, em containers, monte-o em um volume persistente.
+
+**Atrás de proxy reverso:** defina `TRUST_PROXY=true` para que o rate limit do login use o IP real (`X-Forwarded-For`).
+
+## 🧪 Testes
+
+```bash
+npm run server:test
 ```
 
 ## 📁 Estrutura do Projeto
 
 ```
-src/
-├── components/       # Componentes reutilizáveis
+src/                      # Frontend (React + Vite)
+├── components/           # Componentes reutilizáveis
 │   ├── Header.tsx
 │   ├── Footer.tsx
 │   ├── ParticipantForm.tsx
 │   ├── AdminLogin.tsx
 │   └── LoadingSpinner.tsx
-├── pages/           # Páginas da aplicação
+├── pages/                # Páginas da aplicação
 │   ├── Home.tsx
 │   ├── Participant.tsx
 │   ├── Rules.tsx
 │   └── Admin.tsx
-├── services/        # Serviços e integrações
-│   ├── api.ts       # Configuração Axios e funções de API
-│   └── email.ts     # Mock de envio de e-mail
-├── types/           # Tipagens TypeScript
-│   └── index.ts
-├── styles/          # Estilos globais
-│   └── global.css
-├── App.tsx          # Componente principal com rotas
-└── main.tsx         # Entry point
+├── services/
+│   └── api.ts            # Configuração Axios e funções de API
+├── types/                # Tipagens TypeScript
+├── styles/               # Estilos globais
+├── App.tsx               # Componente principal com rotas
+└── main.tsx              # Entry point
+
+server/                   # Backend (Express + SQLite)
+├── src/
+│   ├── index.ts          # Entry point: abre o banco e sobe o servidor
+│   ├── app.ts            # Criação do app Express, CORS e tratamento de erros
+│   ├── config.ts         # Leitura e validação das variáveis de ambiente
+│   ├── db.ts             # Conexão SQLite e schema
+│   ├── auth.ts           # Senha admin, JWT e middleware requireAdmin
+│   ├── draw.ts           # Regra do sorteio
+│   ├── email.ts          # Envio de e-mails (lote e teste)
+│   ├── mappers.ts        # Conversão de linhas do banco para a API
+│   └── routes/           # public.ts, admin.ts, adminActions.ts
+├── data/                 # Banco SQLite (app.db), criado automaticamente
+├── .env.example
+└── README.md
 ```
 
-## 🔌 Integração com Backend
+## 🔌 API
 
-O frontend está preparado para se conectar a uma API REST. Os endpoints esperados são:
+Base: `/api` (em dev, o Vite faz o proxy para `http://localhost:3001`).
 
-### Participantes
-- `POST /api/participants` - Cadastrar participante
-- `GET /api/participants/token/:token` - Buscar participante por token
-- `GET /api/participants` - Listar todos (admin)
-
-### Sorteio
-- `GET /api/draw/status` - Status do sorteio
+### Público
+- `GET /api/health` - Health check
+- `POST /api/participants` - Cadastrar participante (retorna o participante e o link único)
+- `GET /api/participants/:token` - Buscar participante por token (inclui o par, quando o sorteio já ocorreu)
+- `GET /api/draw-status` - Status do sorteio
 
 ### Admin
-- `POST /api/admin/login` - Autenticação admin
+Todas as rotas abaixo, exceto o login, exigem header `Authorization: Bearer <token>`.
+
+- `POST /api/admin/login` - Autenticação admin (retorna JWT, válido por 8h)
+- `GET /api/admin/participants` - Listar todos os participantes e pares
 - `GET /api/admin/export` - Exportar CSV
-- `POST /api/admin/reset` - Reiniciar sorteio
-- `PUT /api/admin/config` - Atualizar configurações
+- `PUT /api/admin/config` - Atualizar número mínimo de participantes
+- `POST /api/admin/reset` - Reiniciar sorteio (mantém participantes, limpa pares)
+- `POST /api/admin/draw` - Realizar sorteio e disparar e-mails
+- `POST /api/admin/send-emails` - Reenviar e-mails em lote
+- `POST /api/admin/test-email` - Enviar e-mail de teste
 
 ## 🎨 Design
 
@@ -119,11 +178,9 @@ O design utiliza uma paleta temática:
 
 ## 📝 Notas
 
-- O envio de e-mails está mockado (logs no console)
-- A autenticação admin usa token armazenado no localStorage
+- O token do admin (JWT) é armazenado no localStorage do navegador
 - O logo deve ser adicionado em `public/logo.png`
 
 ## 📄 Licença
 
 Este projeto é privado e de uso interno.
-

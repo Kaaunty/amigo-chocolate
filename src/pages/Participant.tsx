@@ -3,7 +3,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import { getParticipantByToken, getDrawStatus } from "../services/api";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { FireworksBackground } from "../components/ui/shadcn-io/fireworks-background";
-import type { Participant as ParticipantType } from "../types";
+import type {
+  Participant as ParticipantType,
+  MatchedParticipant,
+} from "../types";
 import "./Participant.css";
 
 const Participant = () => {
@@ -11,7 +14,7 @@ const Participant = () => {
   const navigate = useNavigate();
   const [participant, setParticipant] = useState<ParticipantType | null>(null);
   const [matchedParticipant, setMatchedParticipant] =
-    useState<ParticipantType | null>(null);
+    useState<MatchedParticipant | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [revealed, setRevealed] = useState(false);
