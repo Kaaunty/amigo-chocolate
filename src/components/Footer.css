@@ -1,45 +1,45 @@
 .footer {
-  background: linear-gradient(
-    135deg,
-    var(--color-brown-medium) 0%,
-    var(--color-brown-dark) 100%
-  );
-  color: var(--color-cream);
-  padding: var(--spacing-md) 0;
   margin-top: auto;
+  padding: 0.75rem 0;
+  color: #cfd6d8;
+  background: #0d181c;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 0.8rem;
 }
 
 .footer-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 var(--spacing-md);
+  padding: 0 1.25rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: var(--spacing-sm);
+  gap: 0.25rem 1rem;
 }
 
 .footer-text {
   margin: 0;
-  font-size: 0.9rem;
 }
 
 .footer-link {
-  color: var(--color-white);
+  color: #fff;
+  font-weight: 700;
   text-decoration: none;
-  font-weight: 500;
-  transition: color var(--transition-normal);
 }
 
 .footer-link:hover {
-  color: #dadada;
   text-decoration: underline;
 }
 
-@media (max-width: 768px) {
+.footer-link:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+@media (max-width: 30rem) {
   .footer-container {
-    flex-direction: column;
+    justify-content: center;
     text-align: center;
   }
 }

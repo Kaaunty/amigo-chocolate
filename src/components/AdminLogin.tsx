@@ -16,7 +16,7 @@ const AdminLogin = ({ onSuccess }: AdminLoginProps) => {
     setError('');
 
     if (!password.trim()) {
-      setError('Por favor, informe a senha.');
+      setError('Informe a senha para entrar.');
       return;
     }
 
@@ -27,7 +27,7 @@ const AdminLogin = ({ onSuccess }: AdminLoginProps) => {
       if (response.success) {
         onSuccess();
       } else {
-        setError('Senha incorreta.');
+        setError('Senha incorreta. Confira e tente de novo.');
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro ao fazer login. Tente novamente.');
@@ -39,9 +39,10 @@ const AdminLogin = ({ onSuccess }: AdminLoginProps) => {
   return (
     <div className="admin-login-container">
       <div className="admin-login-card">
-        <h2 className="admin-login-title">🔐 Área Administrativa</h2>
-        <p className="admin-login-subtitle">Digite a senha para acessar</p>
-        
+        <img src="/logo-branco.svg" alt="Rainha das Sete" className="brand-logo" />
+        <h2 className="admin-login-title">Área administrativa</h2>
+        <p className="admin-login-subtitle">Digite a senha para entrar.</p>
+
         <form className="admin-login-form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="password" className="form-label">
@@ -53,7 +54,7 @@ const AdminLogin = ({ onSuccess }: AdminLoginProps) => {
               className="form-input"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Digite a senha"
+              placeholder="Senha"
               disabled={loading}
               required
               autoFocus

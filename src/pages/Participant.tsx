@@ -14,6 +14,7 @@ const Participant = () => {
     useState<ParticipantType | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [revealed, setRevealed] = useState(false);
   const [drawStatus, setDrawStatus] = useState<{
     isDrawn: boolean;
     totalParticipants: number;
@@ -68,33 +69,25 @@ const Participant = () => {
     );
   }
 
-  if (error) {
+  if (error || !participant) {
     return (
       <div className="participant-container">
-        <div className="error-card">
-          <div className="error-icon">❌</div>
-          <h2 className="error-title">Erro</h2>
-          <p className="error-message">{error}</p>
-          <button onClick={() => navigate("/")} className="error-button">
-            Voltar para a página inicial
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  if (!participant) {
-    return (
-      <div className="participant-container">
-        <div className="error-card">
-          <div className="error-icon">🔍</div>
-          <h2 className="error-title">Participante não encontrado</h2>
-          <p className="error-message">
-            O link fornecido não é válido ou o participante não foi encontrado.
+        <div className="participant-card" role="alert">
+          <h1 className="participant-title">
+            {error ? "Algo deu errado" : "Participante não encontrado"}
+          </h1>
+          <p className="participant-lead">
+            {error ||
+              "O link não é válido ou o participante não foi encontrado. Confira se copiou o link inteiro."}
           </p>
-          <button onClick={() => navigate("/")} className="error-button">
-            Voltar para a página inicial
-          </button>
+          <div className="result-actions">
+            <button
+              onClick={() => navigate("/")}
+              className="action-button primary"
+            >
+              Voltar ao início
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -102,7 +95,15 @@ const Participant = () => {
 
   const isDrawComplete = drawStatus?.isDrawn ?? false;
   const hasMatch = matchedParticipant !== null;
-  const showFireworks = isDrawComplete && hasMatch;
+  const showFireworks = isDrawComplete && hasMatch && revealed;
+
+  // Quantos participantes já entram no próximo sorteio
+  const waitingCount = drawStatus
+    ? isDrawComplete
+      ? drawStatus.unmatchedParticipants ?? drawStatus.totalParticipants
+      : drawStatus.totalParticipants
+    : 0;
+  const missing = drawStatus ? drawStatus.minParticipants - waitingCount : 0;
 
   return (
     <div className="participant-container">
@@ -114,160 +115,138 @@ const Participant = () => {
         particleSize={{ min: 2, max: 10 }}
       />
       <div className="participant-card">
-        <div className="participant-header">
-          <h1 className="participant-title">
-            <span className="title-icon">🍫</span>
-            Olá, {participant.name}!
-          </h1>
-          <p className="participant-subtitle">
-            Seu resultado do Amigo Chocolate
-          </p>
-        </div>
+        <header className="participant-header">
+          <img src="/logo.svg" alt="Rainha das Sete" className="brand-logo" />
+          <h1 className="participant-title">Olá, {participant.name}!</h1>
+          <p className="participant-lead">Seu resultado do Amigo Chocolate</p>
+        </header>
 
-        {!isDrawComplete ? (
-          <div className="waiting-section">
-            <div className="waiting-icon">⏳</div>
-            <h2 className="waiting-title">Aguardando sorteio</h2>
-            <p className="waiting-message">
-              O sorteio ainda não foi realizado. Estamos aguardando mais
-              participantes.
+        {!hasMatch ? (
+          <section className="waiting-section" aria-live="polite">
+            <h2 className="section-title">
+              {isDrawComplete
+                ? "Você ainda não foi sorteado"
+                : "O sorteio ainda não saiu"}
+            </h2>
+            <p className="section-text">
+              {isDrawComplete
+                ? "Estamos aguardando mais participantes para fazer um novo sorteio. Guarde este link e volte mais tarde."
+                : "Guarde este link e volte mais tarde para ver quem você tirou."}
             </p>
             {drawStatus && (
               <div className="status-info">
-                <p>
-                  <strong>{drawStatus.totalParticipants}</strong> de{" "}
+                <p className="status-count">
+                  <strong>{waitingCount}</strong> de{" "}
                   <strong>{drawStatus.minParticipants}</strong> participantes
                   cadastrados
                 </p>
-                <div className="progress-bar">
+                <div
+                  className="progress-bar"
+                  role="progressbar"
+                  aria-valuemin={0}
+                  aria-valuemax={drawStatus.minParticipants}
+                  aria-valuenow={Math.min(
+                    waitingCount,
+                    drawStatus.minParticipants
+                  )}
+                >
                   <div
                     className="progress-fill"
                     style={{
                       width: `${Math.min(
-                        (drawStatus.totalParticipants /
-                          drawStatus.minParticipants) *
-                          100,
+                        (waitingCount / drawStatus.minParticipants) * 100,
                         100
                       )}%`,
                     }}
                   />
                 </div>
                 <p className="progress-text">
-                  {drawStatus.totalParticipants >= drawStatus.minParticipants
-                    ? "Sorteio será realizado em breve!"
-                    : `Faltam ${
-                        drawStatus.minParticipants -
-                        drawStatus.totalParticipants
-                      } participantes`}
+                  {missing <= 0
+                    ? "O sorteio sai em breve."
+                    : `Faltam ${missing} ${
+                        missing === 1 ? "participante" : "participantes"
+                      }.`}
                 </p>
               </div>
             )}
-            <button onClick={() => navigate("/")} className="action-button">
-              Voltar para a página inicial
-            </button>
-          </div>
-        ) : !hasMatch ? (
-          <div className="waiting-section">
-            <div className="waiting-icon">⏳</div>
-            <h2 className="waiting-title">Aguardando sorteio</h2>
-            <p className="waiting-message">
-              Você ainda não foi sorteado. Estamos aguardando mais participantes
-              para realizar um novo sorteio.
-            </p>
-            {drawStatus && (
-              <div className="status-info">
-                <p>
-                  <strong>
-                    {drawStatus.unmatchedParticipants ??
-                      drawStatus.totalParticipants}
-                  </strong>{" "}
-                  de <strong>{drawStatus.minParticipants}</strong> participantes
-                </p>
-                <div className="progress-bar">
-                  <div
-                    className="progress-fill"
-                    style={{
-                      width: `${Math.min(
-                        ((drawStatus.unmatchedParticipants ??
-                          drawStatus.totalParticipants) /
-                          drawStatus.minParticipants) *
-                          100,
-                        100
-                      )}%`,
-                    }}
-                  />
-                </div>
-                <p className="progress-text">
-                  {(drawStatus.unmatchedParticipants ??
-                    drawStatus.totalParticipants) >= drawStatus.minParticipants
-                    ? "Sorteio será realizado em breve!"
-                    : `Faltam ${
-                        drawStatus.minParticipants -
-                        (drawStatus.unmatchedParticipants ??
-                          drawStatus.totalParticipants)
-                      } participantes`}
-                </p>
-              </div>
-            )}
-            <button onClick={() => navigate("/")} className="action-button">
-              Voltar para a página inicial
-            </button>
-          </div>
-        ) : (
-          <div className="result-section">
-            <div className="result-icon">🎁</div>
-            <h2 className="result-title">Seu amigo chocolate é:</h2>
-            <div className="matched-name">{matchedParticipant.name}</div>
-            <div className="result-message">
-              <p>
-                🎉 Parabéns! Você tirou{" "}
-                <strong>{matchedParticipant.name}</strong> no sorteio!
-              </p>
-
-              {(matchedParticipant.preferredChocolate ||
-                matchedParticipant.dislikes) && (
-                <div className="preferences-section">
-                  {matchedParticipant.preferredChocolate && (
-                    <div className="preference-item">
-                      <span className="preference-icon">🍫</span>
-                      <div className="preference-content">
-                        <strong>Chocolate Preferido:</strong>
-                        <p>{matchedParticipant.preferredChocolate}</p>
-                      </div>
-                    </div>
-                  )}
-                  {matchedParticipant.dislikes && (
-                    <div className="preference-item">
-                      <span className="preference-icon">🚫</span>
-                      <div className="preference-content">
-                        <strong>Não Gosta De:</strong>
-                        <p>{matchedParticipant.dislikes}</p>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              <p className="secret-reminder">
-                🔒 <strong>Lembre-se:</strong> Mantenha o segredo! Não conte
-                para ninguém quem você tirou.
-              </p>
-            </div>
             <div className="result-actions">
-              <button
-                onClick={() => navigate("/regras")}
-                className="action-button secondary"
-              >
-                Ver regras
-              </button>
               <button
                 onClick={() => navigate("/")}
                 className="action-button primary"
               >
-                Voltar para a página inicial
+                Voltar ao início
               </button>
             </div>
-          </div>
+          </section>
+        ) : (
+          <section className="result-section" aria-live="polite">
+            <div className={`wrapper-bar${revealed ? " is-open" : ""}`}>
+              {revealed ? (
+                <>
+                  <p className="wrapper-label">Você tirou</p>
+                  <div className="matched-name-mask">
+                    <p className="matched-name">{matchedParticipant.name}</p>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <h2 className="wrapper-closed-title">
+                    Seu amigo chocolate está embrulhado
+                  </h2>
+                  <p className="wrapper-closed-text">
+                    Abra quando estiver sozinho. Ninguém mais deve ver.
+                  </p>
+                  <button
+                    onClick={() => setRevealed(true)}
+                    className="action-button reveal"
+                  >
+                    Revelar meu amigo chocolate
+                  </button>
+                </>
+              )}
+            </div>
+
+            {revealed && (
+              <div className="reveal-details">
+                {(matchedParticipant.preferredChocolate ||
+                  matchedParticipant.dislikes) && (
+                  <dl className="preferences">
+                    {matchedParticipant.preferredChocolate && (
+                      <div className="preference-item">
+                        <dt>Chocolate preferido</dt>
+                        <dd>{matchedParticipant.preferredChocolate}</dd>
+                      </div>
+                    )}
+                    {matchedParticipant.dislikes && (
+                      <div className="preference-item">
+                        <dt>Não gosta de</dt>
+                        <dd>{matchedParticipant.dislikes}</dd>
+                      </div>
+                    )}
+                  </dl>
+                )}
+
+                <p className="secret-reminder">
+                  Segredo: não conte para ninguém quem você tirou.
+                </p>
+
+                <div className="result-actions">
+                  <button
+                    onClick={() => navigate("/")}
+                    className="action-button primary"
+                  >
+                    Voltar ao início
+                  </button>
+                  <button
+                    onClick={() => navigate("/regras")}
+                    className="action-button secondary"
+                  >
+                    Ver regras
+                  </button>
+                </div>
+              </div>
+            )}
+          </section>
         )}
       </div>
     </div>

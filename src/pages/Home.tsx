@@ -6,6 +6,7 @@ import "./Home.css";
 const Home = () => {
   const [showSuccess, setShowSuccess] = useState(false);
   const [participantLink, setParticipantLink] = useState("");
+  const [copied, setCopied] = useState(false);
   const navigate = useNavigate();
 
   const handleSuccess = (link: string) => {
@@ -20,17 +21,21 @@ const Home = () => {
     }
   };
 
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(participantLink);
-    alert("Link copiado para a área de transferência!");
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(participantLink);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setCopied(false);
+    }
   };
 
   if (showSuccess) {
     return (
       <div className="home-container">
         <div className="success-card">
-          <div className="success-icon">🎉</div>
-          <h2 className="success-title">Cadastro realizado com sucesso!</h2>
+          <h2 className="success-title">Você está no sorteio!</h2>
           <p className="success-message">
             Seu link único foi gerado. Guarde-o bem! Você precisará dele para
             ver quem você tirou no sorteio.
@@ -49,9 +54,8 @@ const Home = () => {
                 type="button"
                 onClick={handleCopyLink}
                 className="copy-button"
-                title="Copiar link"
-              >
-                📋
+                >
+                {copied ? "Copiado" : "Copiar"}
               </button>
             </div>
           </div>
@@ -77,60 +81,43 @@ const Home = () => {
       </div>
     );
   }
-  <div className="home-backgroud">
 
-
-  </div>
   return (
     <div className="home-container">
-      <div className="home-backgroud"> </div>
       <div className="home-content">
-        <div className="brand-banner">
-          <img src="/logo.png" alt="Amigo Chocolate - Rainha das Sete" className="brand-banner-img" />
-        </div>
-  <div className="home-header">
-    <h1 className="home-title">
-      <span className="title-icon">
-        Amigo Chocolate
-      </span>
-      <span className="title-subtitle">Rainha das Sete</span>
-    </h1>
+        <header className="home-header">
+          <img
+            src="/logo.svg"
+            alt="Rainha das Sete"
+            className="brand-logo"
+          />
+          <h1 className="home-title">
+            Amigo Chocolate
+            <span className="visually-hidden"> Rainha das Sete</span>
+          </h1>
+          <p className="home-description">
+            Cadastre seu nome, receba um link só seu e descubra em segredo
+            quem você vai presentear com chocolate.
+          </p>
+        </header>
 
-    <p className="home-description">
-      Participe do sorteio e descubra quem será seu amigo chocolate!  
-      Cada participante receberá um link único para acessar seu resultado.
-    </p>
-  </div>
-
-
-
-        <div className="home-form-section">
-          <h2 className="form-section-title">Faça seu cadastro</h2>
+        <section className="home-bar" aria-labelledby="form-title">
+          <h2 id="form-title" className="form-section-title">
+            Participe do sorteio
+          </h2>
           <ParticipantForm onSuccess={handleSuccess} />
-        </div>
+        </section>
 
-        <div className="home-info">
-          <div className="info-card">
-            <span className="info-icon">🎁</span>
-            <div>
-              <h3>Como funciona?</h3>
-              <p>
-                Cadastre-se com seu nome. Você receberá um
-                link único para acompanhar o sorteio.
-              </p>
-            </div>
-          </div>
-          <div className="info-card">
-            <span className="info-icon">🔒</span>
-            <div>
-              <h3>Privacidade</h3>
-              <p>
-                Somente você terá acesso ao seu resultado através do seu link
-                único.
-              </p>
-            </div>
-          </div>
-        </div>
+        <section className="home-info" aria-label="Como funciona">
+          <ol className="steps">
+            <li>Cadastre-se com o seu nome.</li>
+            <li>Guarde o link único que você recebe.</li>
+            <li>Quando o sorteio sair, abra o link e veja quem você tirou.</li>
+          </ol>
+          <p className="privacy">
+            Só você vê o seu resultado, pelo seu link.
+          </p>
+        </section>
       </div>
     </div>
   );

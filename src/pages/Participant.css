@@ -1,315 +1,340 @@
+/*
+  Resultado do participante, no mesmo sistema da Home (Manual de Identidade
+  Visual): vermelho #E30613, preto #0D181C, branco e Inter. A revelação é a
+  barra de chocolate embrulhada que se abre. Tudo escopado em
+  .participant-container; só o keyframe fadeInScale é global porque o
+  Admin.css também o usa.
+*/
+
 .participant-container {
+  --p-red: #e30613;
+  --p-red-deep: #a8040e;
+  --p-ink: #0d181c;
+  --p-paper: #ffffff;
+  --p-muted: #4a5559;
+
   flex: 1;
   display: flex;
-  align-items: center;
   justify-content: center;
-  padding: var(--spacing-xl) var(--spacing-md);
-  min-height: calc(100vh - 200px);
-  position: relative;
-}
-
-.participant-card {
-  background: var(--color-white);
-  border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-lg);
-  padding: var(--spacing-xl);
-  max-width: 700px;
-  width: 100%;
-  text-align: center;
-  animation: fadeInScale 0.5s ease;
-}
-
-.participant-header {
-  margin-bottom: var(--spacing-xl);
-  padding-bottom: var(--spacing-lg);
-  border-bottom: 2px solid var(--color-cream-dark);
-}
-
-.participant-title {
-  font-size: 2.5rem;
-  color: var(--color-brown-dark);
-  margin-bottom: var(--spacing-sm);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--spacing-sm);
-  flex-wrap: wrap;
-}
-
-.title-icon {
-  font-size: 3rem;
-}
-
-.participant-subtitle {
-  color: var(--color-text-light);
-  font-size: 1.1rem;
-}
-
-/* Waiting Section */
-.waiting-section,
-.no-match-section {
-  padding: var(--spacing-lg) 0;
-}
-
-.waiting-icon,
-.no-match-icon {
-  font-size: 4rem;
-  margin-bottom: var(--spacing-md);
-  animation: pulse 2s ease-in-out infinite;
-}
-
-.waiting-title,
-.no-match-title {
-  color: var(--color-brown-dark);
-  font-size: 2rem;
-  margin-bottom: var(--spacing-md);
-}
-
-.waiting-message,
-.no-match-message {
-  color: var(--color-text-light);
-  font-size: 1.1rem;
-  margin-bottom: var(--spacing-lg);
-  line-height: 1.8;
-}
-
-.status-info {
-  background: var(--color-cream-dark);
-  padding: var(--spacing-md);
-  border-radius: var(--border-radius-md);
-  margin: var(--spacing-lg) 0;
-}
-
-.status-info p {
-  margin-bottom: var(--spacing-sm);
-  color: var(--color-text-dark);
-  font-size: 1.1rem;
-}
-
-.progress-bar {
-  width: 100%;
-  height: 24px;
-  background: var(--color-white);
-  border-radius: var(--border-radius-sm);
-  overflow: hidden;
-  margin: var(--spacing-sm) 0;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    var(--color-gold-dark) 0%,
-    var(--color-gold) 100%
-  );
-  transition: width 0.5s ease;
-  border-radius: var(--border-radius-sm);
-}
-
-.progress-text {
-  margin-top: var(--spacing-sm);
-  color: var(--color-text-light);
-  font-size: 0.95rem;
-}
-
-/* Result Section */
-.result-section {
-  padding: var(--spacing-lg) 0;
-}
-
-.result-icon {
-  font-size: 5rem;
-  margin-bottom: var(--spacing-md);
-  animation: bounce 1s ease-in-out infinite;
-}
-
-.result-title {
-  color: var(--color-brown-dark);
-  font-size: 1.8rem;
-  margin-bottom: var(--spacing-lg);
-}
-
-.matched-name {
-  background: linear-gradient(
-    135deg,
-    var(--color-gold-dark) 0%,
-    var(--color-gold) 100%
-  );
-  color: var(--color-white);
-  font-size: 2.5rem;
-  font-weight: bold;
-  padding: var(--spacing-md) var(--spacing-lg);
-  border-radius: var(--border-radius-md);
-  margin: var(--spacing-lg) 0;
-  box-shadow: var(--shadow-md);
-  animation: fadeInScale 0.6s ease 0.3s both;
-}
-
-.result-message {
-  margin: var(--spacing-lg) 0;
-  text-align: left;
-  background: var(--color-cream-dark);
-  padding: var(--spacing-md);
-  border-radius: var(--border-radius-md);
-  border-left: 4px solid var(--color-gold);
-}
-
-.result-message p {
-  margin-bottom: var(--spacing-sm);
-  color: var(--color-text-dark);
-  font-size: 1rem;
-  line-height: 1.8;
-}
-
-.result-message p:last-child {
-  margin-bottom: 0;
-}
-
-.secret-reminder {
-  margin-top: var(--spacing-md) !important;
-  padding-top: var(--spacing-md);
-  border-top: 1px solid var(--color-brown-lighter);
-  font-size: 0.95rem !important;
-}
-
-/* Preferences Section */
-.preferences-section {
-  margin: var(--spacing-lg) 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
-}
-
-.preference-item {
-  display: flex;
   align-items: flex-start;
-  gap: var(--spacing-sm);
-  background: var(--color-white);
-  padding: var(--spacing-md);
-  border-radius: var(--border-radius-md);
-  border-left: 3px solid var(--color-gold);
+  padding: 2.5rem 1.25rem 3.5rem;
+  position: relative;
+  color: var(--p-ink);
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: var(--p-paper);
+  border-top: 10px solid var(--p-red);
+}
+
+.participant-container .participant-card {
+  width: 100%;
+  max-width: 40rem;
+  display: grid;
+  gap: 2rem;
   text-align: left;
 }
 
-.preference-icon {
-  font-size: 1.5rem;
-  flex-shrink: 0;
+/* Cabeçalho ------------------------------------------------------------ */
+
+.participant-container .participant-header {
+  display: grid;
+  gap: 0.75rem;
+  justify-items: start;
 }
 
-.preference-content {
-  flex: 1;
-}
-
-.preference-content strong {
+/* Logotipo reto, sem efeito, acima do mínimo de 100 px */
+.participant-container .brand-logo {
   display: block;
-  color: var(--color-brown-dark);
-  font-size: 0.95rem;
-  margin-bottom: var(--spacing-xs);
+  width: 150px;
+  height: auto;
+  margin-left: -0.7rem;
 }
 
-.preference-content p {
-  margin: 0;
-  color: var(--color-text-dark);
-  font-size: 1rem;
+.participant-container .participant-title {
+  font-size: clamp(2.25rem, 8vw, 3.5rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  overflow-wrap: anywhere;
+}
+
+.participant-container .participant-lead {
+  font-size: 1.125rem;
   line-height: 1.6;
+  color: var(--p-muted);
 }
 
-.result-actions {
+.participant-container .section-title {
+  font-size: 1.6rem;
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.participant-container .section-text {
+  margin-top: 0.5rem;
+  max-width: 32rem;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--p-muted);
+}
+
+/* Aguardando o sorteio ------------------------------------------------- */
+
+.participant-container .status-info {
+  margin: 1.5rem 0;
+  max-width: 32rem;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.participant-container .status-count {
+  font-size: 1.05rem;
+}
+
+.participant-container .progress-bar {
+  height: 14px;
+  background: #e4e8e9;
+  border-radius: 7px;
+  overflow: hidden;
+}
+
+.participant-container .progress-fill {
+  height: 100%;
+  background: var(--p-red);
+  border-radius: 7px;
+  transition: width 0.5s ease;
+}
+
+.participant-container .progress-text {
+  font-size: 0.95rem;
+  color: var(--p-muted);
+}
+
+/* Barra embrulhada / revelação ----------------------------------------- */
+
+.participant-container .wrapper-bar {
+  --fold: 72px;
+  position: relative;
+  display: grid;
+  gap: 0.75rem;
+  align-content: center;
+  min-height: 15rem;
+  padding: 2rem 1.75rem;
+  color: var(--p-paper);
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px) 0 0 / 72px
+      72px,
+    linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px) 0 0 /
+      72px 72px,
+    var(--p-ink);
+  border-radius: 18px;
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--fold)) 0,
+    100% var(--fold),
+    100% 100%,
+    0 100%
+  );
+}
+
+/* Ponta do papel: fecha a barra e some quando ela é aberta */
+.participant-container .wrapper-bar::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: var(--fold);
+  height: var(--fold);
+  background: var(--p-red);
+  clip-path: polygon(0 0, 100% 100%, 0 100%);
+  transform-origin: 100% 0;
+  pointer-events: none;
+}
+
+.participant-container .wrapper-bar.is-open::after {
+  animation: peel 0.5s cubic-bezier(0.5, 0, 0.75, 0) forwards;
+}
+
+@keyframes peel {
+  to {
+    transform: translate(40%, -40%) rotate(35deg) scale(0.6);
+    opacity: 0;
+  }
+}
+
+.participant-container .wrapper-closed-title {
+  max-width: calc(100% - var(--fold));
+  font-size: 1.75rem;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.participant-container .wrapper-closed-text {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #cfd6d8;
+}
+
+.participant-container .wrapper-label {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #cfd6d8;
+}
+
+/* O nome sobe de dentro da barra, uma vez */
+.participant-container .matched-name-mask {
+  overflow: hidden;
+  padding-bottom: 0.1em;
+}
+
+.participant-container .matched-name {
+  font-size: clamp(2.5rem, 10vw, 4.25rem);
+  font-weight: 900;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  overflow-wrap: anywhere;
+  animation: name-up 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s both;
+}
+
+@keyframes name-up {
+  from {
+    transform: translateY(105%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+/* Detalhes depois de revelar ------------------------------------------- */
+
+.participant-container .reveal-details {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  animation: details-in 0.4s ease 0.7s both;
+}
+
+@keyframes details-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.participant-container .preferences {
+  display: grid;
+  gap: 1rem;
+}
+
+.participant-container .preference-item {
+  padding-left: 1rem;
+  border-left: 4px solid var(--p-red);
+}
+
+.participant-container .preference-item dt {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--p-muted);
+}
+
+.participant-container .preference-item dd {
+  margin: 0.15rem 0 0;
+  font-size: 1.15rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.participant-container .secret-reminder {
+  padding-top: 1.25rem;
+  border-top: 2px solid var(--p-ink);
+  font-weight: 700;
+}
+
+/* Botões ----------------------------------------------------------------- */
+
+.participant-container .result-actions {
   display: flex;
-  gap: var(--spacing-sm);
-  justify-content: center;
-  margin-top: var(--spacing-xl);
   flex-wrap: wrap;
+  gap: 0.75rem;
 }
 
-/* Error Card */
-.error-card {
-  background: var(--color-white);
-  border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-lg);
-  padding: var(--spacing-xl);
-  max-width: 500px;
-  width: 100%;
-  text-align: center;
-}
-
-.error-icon {
-  font-size: 4rem;
-  margin-bottom: var(--spacing-md);
-}
-
-.error-title {
-  color: var(--color-brown-dark);
-  font-size: 2rem;
-  margin-bottom: var(--spacing-md);
-}
-
-.error-message {
-  color: var(--color-text-light);
-  font-size: 1.1rem;
-  margin-bottom: var(--spacing-lg);
-  line-height: 1.8;
-}
-
-.error-button {
-  padding: var(--spacing-sm) var(--spacing-lg);
-  background: linear-gradient(
-    135deg,
-    var(--color-gold-dark) 0%,
-    var(--color-gold) 100%
-  );
-  color: var(--color-white);
-  border: none;
-  border-radius: var(--border-radius-md);
-  font-size: 1rem;
-  font-weight: 600;
+.participant-container .action-button {
+  padding: 0.9rem 1.5rem;
+  font: inherit;
+  font-weight: 900;
+  border: 2px solid transparent;
+  border-radius: 10px;
   cursor: pointer;
-  transition: all var(--transition-normal);
-  box-shadow: var(--shadow-md);
 }
 
-.error-button:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+.participant-container .action-button.primary,
+.participant-container .action-button.reveal {
+  color: #fff;
+  background: var(--p-red);
+  box-shadow: 0 4px 0 var(--p-red-deep);
 }
 
-.action-button {
-  padding: var(--spacing-sm) var(--spacing-lg);
-  border: none;
-  border-radius: var(--border-radius-md);
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all var(--transition-normal);
+.participant-container .action-button.reveal {
+  justify-self: start;
+  margin-top: 0.5rem;
 }
 
-.action-button.primary {
-  background: linear-gradient(
-    135deg,
-    var(--color-gold-dark) 0%,
-    var(--color-gold) 100%
-  );
-  color: var(--color-white);
-  box-shadow: var(--shadow-md);
+.participant-container .action-button.primary:hover,
+.participant-container .action-button.reveal:hover {
+  background: #f01a27;
 }
 
-.action-button.primary:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+.participant-container .action-button.primary:active,
+.participant-container .action-button.reveal:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 var(--p-red-deep);
 }
 
-.action-button.secondary {
-  background: var(--color-white);
-  color: var(--color-text-dark);
-  border: 2px solid var(--color-brown-lighter);
+.participant-container .action-button.secondary {
+  color: var(--p-ink);
+  background: transparent;
+  border-color: var(--p-ink);
 }
 
-.action-button.secondary:hover {
-  background: var(--color-cream-dark);
+.participant-container .action-button.secondary:hover {
+  background: rgba(13, 24, 28, 0.08);
 }
 
-/* Animações */
+.participant-container .action-button:focus-visible {
+  outline: 3px solid var(--p-ink);
+  outline-offset: 3px;
+}
+
+.participant-container .action-button.reveal:focus-visible {
+  outline-color: var(--p-paper);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .participant-container .wrapper-bar.is-open::after {
+    animation: none;
+    opacity: 0;
+  }
+
+  .participant-container .matched-name,
+  .participant-container .reveal-details {
+    animation: none;
+  }
+
+  .participant-container .progress-fill {
+    transition: none;
+  }
+}
+
+@media (max-width: 30rem) {
+  .participant-container .action-button {
+    width: 100%;
+  }
+}
+
+/* Usado também por Admin.css */
 @keyframes fadeInScale {
   from {
     opacity: 0;
@@ -318,54 +343,5 @@
   to {
     opacity: 1;
     transform: scale(1);
-  }
-}
-
-@keyframes bounce {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.7;
-    transform: scale(1.1);
-  }
-}
-
-@media (max-width: 768px) {
-  .participant-card {
-    padding: var(--spacing-md);
-  }
-
-  .participant-title {
-    font-size: 1.8rem;
-  }
-
-  .title-icon {
-    font-size: 2rem;
-  }
-
-  .matched-name {
-    font-size: 1.8rem;
-    padding: var(--spacing-sm) var(--spacing-md);
-  }
-
-  .result-actions {
-    flex-direction: column;
-  }
-
-  .action-button {
-    width: 100%;
   }
 }

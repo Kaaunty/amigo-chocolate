@@ -74,11 +74,11 @@ code {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-brown-light);
+  background: #0d181c;
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-brown-medium);
+  background: #e30613;
 }
 

@@ -48,17 +48,13 @@ export function FireworksBackground({
   const hasPlayedRef = useRef(false);
   const isAnimatingRef = useRef(false);
 
+  // Cores da marca (Manual de Identidade Visual), visíveis sobre fundo branco
   const colors = [
-    '#FFD700', // Gold
-    '#FF6B6B', // Red
-    '#4ECDC4', // Cyan
-    '#45B7D1', // Blue
-    '#FFA07A', // Light Salmon
-    '#98D8C8', // Mint
-    '#F7DC6F', // Yellow
-    '#BB8FCE', // Purple
-    '#FF1493', // Deep Pink
-    '#00FF00', // Lime
+    '#E30613', // Vermelho Rainha das Sete
+    '#FF4D5A', // Vermelho claro
+    '#A8040E', // Vermelho profundo
+    '#0D181C', // Preto
+    '#4A5559', // Cinza
   ];
 
   useEffect(() => {

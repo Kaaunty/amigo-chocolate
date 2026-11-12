@@ -1,373 +1,426 @@
+/*
+  Home, seguindo o Manual de Identidade Visual da Rainha das Sete:
+  vermelho #E30613, preto #0D181C, branco e Inter. O formulário é uma barra
+  de chocolate preta com a ponta do papel dobrada em vermelho.
+  Tudo escopado em .home-container para não vazar para as outras telas.
+*/
+
 .home-container {
+  --h-red: #e30613;
+  --h-red-deep: #a8040e;
+  --h-ink: #0d181c;
+  --h-paper: #ffffff;
+  --h-muted: #4a5559;
+
   flex: 1;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: var(--spacing-xl) var(--spacing-md);
-  min-height: calc(100vh - 200px);
-}
-
-.home-content {
-  max-width: 900px;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xl);
-}
-
-.home-header {
-  text-align: center;
-  padding: var(--spacing-lg) 0;
-}
-
-.home-title {
-  font-size: 3rem;
-  color: var(--color-brown-dark);
-  margin-bottom: var(--spacing-md);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--spacing-xs);
-  animation: fadeInDown 0.6s ease;
-}
-
-.title-icon {
-  font-size: 4rem;
-  animation: bounce 2s ease-in-out infinite;
-  display: flex;
-  align-items: center;
   justify-content: center;
+  padding: 2.5rem 1.25rem 3.5rem;
+  color: var(--h-ink);
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: var(--h-paper);
+  border-top: 10px solid var(--h-red);
 }
 
-.title-logo {
-  width: 120px;
-  height: auto;
-  max-width: 100%;
-}
-
-.title-subtitle {
-  font-size: 1.5rem;
-  color: var(--color-gold-dark);
-  font-weight: 400;
-}
-
-.home-description {
-  font-size: 1.2rem;
-  color: var(--color-text-light);
-  max-width: 700px;
-  margin: 0 auto;
-  line-height: 1.8;
-}
-
-.home-form-section {
-  background: var(--color-white);
-  padding: var(--spacing-xl);
-  border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-md);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--spacing-md);
-  animation: fadeInUp 0.6s ease 0.2s both;
-}
-
-.form-section-title {
-  color: var(--color-brown-dark);
-  font-size: 1.8rem;
-  margin-bottom: var(--spacing-sm);
-}
-
-.home-info {
+.home-container .home-content {
+  width: 100%;
+  max-width: 34rem;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: var(--spacing-md);
-  animation: fadeInUp 0.6s ease 0.4s both;
+  gap: 2.25rem;
+  align-content: start;
 }
 
-.info-card {
-  background: var(--color-white);
-  padding: var(--spacing-md);
-  border-radius: var(--border-radius-md);
-  box-shadow: var(--shadow-sm);
-  display: flex;
-  gap: var(--spacing-sm);
-  align-items: flex-start;
-  transition: transform var(--transition-normal),
-    box-shadow var(--transition-normal);
+/* Cabeçalho ------------------------------------------------------------ */
+
+.home-container .home-header {
+  display: grid;
+  gap: 1.25rem;
+  justify-items: start;
 }
 
-.info-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-md);
-}
-
-.info-icon {
-  font-size: 2rem;
-  flex-shrink: 0;
-}
-
-.info-card h3 {
-  color: var(--color-brown-dark);
-  margin-bottom: var(--spacing-xs);
-  font-size: 1.1rem;
-}
-
-.info-card p {
-  color: var(--color-text-light);
-  font-size: 0.95rem;
-  line-height: 1.6;
-}
-
-/* Success Card */
-.success-card {
-  background: var(--color-white);
-  padding: var(--spacing-xl);
-  border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-lg);
-  max-width: 600px;
-  width: 100%;
-  text-align: center;
-  animation: fadeInScale 0.5s ease;
-}
-
-.success-icon {
-  font-size: 4rem;
-  margin-bottom: var(--spacing-md);
-  animation: bounce 1s ease-in-out infinite;
-}
-
-.success-title {
-  color: var(--color-brown-dark);
-  font-size: 2rem;
-  margin-bottom: var(--spacing-sm);
-}
-
-.success-message {
-  color: var(--color-text-light);
-  font-size: 1.1rem;
-  margin-bottom: var(--spacing-lg);
-  line-height: 1.8;
-}
-
-.link-container {
-  margin: var(--spacing-lg) 0;
-  text-align: left;
-}
-
-.link-label {
+/* Logotipo reto, sem sombra nem efeito, acima do mínimo de 100 px */
+.home-container .brand-logo {
   display: block;
-  font-weight: 600;
-  color: var(--color-text-dark);
-  margin-bottom: var(--spacing-xs);
+  width: 190px;
+  height: auto;
+  margin-left: -0.9rem;
 }
 
-.link-display {
-  display: flex;
-  gap: var(--spacing-xs);
+.home-container .home-title {
+  font-size: clamp(2.75rem, 11vw, 4.75rem);
+  font-weight: 900;
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  color: var(--h-ink);
+  text-wrap: balance;
 }
 
-.link-input {
-  flex: 1;
-  padding: var(--spacing-sm);
-  border: 2px solid var(--color-brown-lighter);
-  border-radius: var(--border-radius-sm);
-  font-size: 0.9rem;
-  background-color: var(--color-cream-dark);
-  color: var(--color-text-dark);
-  font-family: monospace;
+.home-container .home-description {
+  max-width: 30rem;
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: var(--h-muted);
 }
 
-.copy-button {
-  padding: var(--spacing-sm) var(--spacing-md);
-  background: var(--color-gold);
-  color: var(--color-white);
-  border: none;
-  border-radius: var(--border-radius-sm);
-  font-size: 1.2rem;
-  cursor: pointer;
-  transition: transform var(--transition-normal);
+.home-container .visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
 
-.copy-button:hover {
-  transform: scale(1.1);
-}
+/* Barra de chocolate (formulário) ------------------------------------- */
 
-.success-actions {
-  display: flex;
-  gap: var(--spacing-sm);
-  justify-content: center;
-  margin-top: var(--spacing-lg);
-  flex-wrap: wrap;
-}
-
-.action-button {
-  padding: var(--spacing-sm) var(--spacing-lg);
-  border: none;
-  border-radius: var(--border-radius-md);
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all var(--transition-normal);
-}
-
-.action-button.primary {
-  background: linear-gradient(
-    135deg,
-    var(--color-gold-dark) 0%,
-    var(--color-gold) 100%
+.home-container .home-bar {
+  --fold: 64px;
+  position: relative;
+  padding: 1.75rem 1.5rem 1.75rem;
+  color: var(--h-paper);
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px) 0 0 / 72px
+      72px,
+    linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px) 0 0 /
+      72px 72px,
+    var(--h-ink);
+  border-radius: 18px;
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--fold)) 0,
+    100% var(--fold),
+    100% 100%,
+    0 100%
   );
-  color: var(--color-white);
-  box-shadow: var(--shadow-md);
+  display: grid;
+  gap: 1.25rem;
 }
 
-.action-button.primary:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+/* Ponta do papel dourado dobrada sobre a barra */
+.home-container .home-bar::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: var(--fold);
+  height: var(--fold);
+  background: var(--h-red);
+  clip-path: polygon(0 0, 100% 100%, 0 100%);
+  transform-origin: 50% 50%;
+  animation: home-fold 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.25s both;
+  pointer-events: none;
 }
 
-.action-button.secondary {
-  background: var(--color-cream-dark);
-  color: var(--color-text-dark);
-  border: 2px solid var(--color-brown-lighter);
+@keyframes home-fold {
+  from {
+    transform: scale(0.2) rotate(-18deg);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
 }
 
-.action-button.secondary:hover {
-  background: var(--color-brown-lighter);
-}
-
-.success-info {
-  margin-top: var(--spacing-lg);
-  padding: var(--spacing-md);
-  background: var(--color-cream-dark);
-  border-radius: var(--border-radius-sm);
-  border-left: 4px solid var(--color-gold);
-}
-
-.success-info p {
+.home-container .form-section-title {
   margin: 0;
-  color: var(--color-text-light);
+  max-width: calc(100% - var(--fold));
+  font-size: 1.6rem;
+  font-weight: 900;
+  line-height: 1.15;
+  color: var(--h-paper);
+}
+
+/* Campos (sobrescreve ParticipantForm.css só aqui) */
+
+.home-container .participant-form {
+  max-width: none;
+  gap: 1.1rem;
+}
+
+.home-container .form-label {
+  color: var(--h-paper);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.home-container .form-input {
+  padding: 0.8rem 0.9rem;
+  font: inherit;
+  font-size: 1rem;
+  color: var(--h-ink);
+  background-color: var(--h-paper);
+  border: 2px solid transparent;
+  border-radius: 10px;
+}
+
+.home-container .form-input::placeholder {
+  color: #6a7478;
+}
+
+.home-container .form-input:focus {
+  border-color: var(--h-red);
+  box-shadow: 0 0 0 3px rgba(227, 6, 19, 0.5);
+}
+
+.home-container .form-input:disabled {
+  background-color: #dfe3e4;
+}
+
+.home-container .form-error {
+  background: var(--h-paper);
+  color: #9e0614;
+  border-left: 4px solid var(--h-red);
+  border-radius: 8px;
+}
+
+.home-container .form-button {
+  margin-top: 0.25rem;
+  padding: 0.9rem 1.5rem;
+  font: inherit;
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: #fff;
+  background: var(--h-red);
+  border-radius: 10px;
+  box-shadow: 0 4px 0 var(--h-red-deep);
+}
+
+.home-container .form-button:hover:not(:disabled) {
+  background: #f01a27;
+  transform: translateY(-1px);
+  box-shadow: 0 5px 0 var(--h-red-deep);
+}
+
+.home-container .form-button:active:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 var(--h-red-deep);
+}
+
+.home-container .form-button:focus-visible {
+  outline: 3px solid var(--h-paper);
+  outline-offset: 3px;
+}
+
+.home-container .action-button:focus-visible,
+.home-container .copy-button:focus-visible {
+  outline: 3px solid var(--h-ink);
+  outline-offset: 3px;
+}
+
+/* Como funciona -------------------------------------------------------- */
+
+.home-container .home-info {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.home-container .steps {
+  list-style: none;
+  counter-reset: passo;
+  display: grid;
+  gap: 0.9rem;
+}
+
+.home-container .steps li {
+  counter-increment: passo;
+  display: grid;
+  grid-template-columns: 2.25rem 1fr;
+  align-items: baseline;
+  max-width: 30rem;
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+
+.home-container .steps li::before {
+  content: counter(passo);
+  font-size: 1.75rem;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--h-red);
+}
+
+.home-container .privacy {
+  padding-top: 1.1rem;
+  border-top: 2px solid var(--h-ink);
+  color: var(--h-muted);
+  max-width: 30rem;
   font-size: 0.95rem;
 }
 
-/* Animações */
-@keyframes fadeInDown {
+/* Cadastro concluído --------------------------------------------------- */
+
+.home-container .success-card {
+  align-self: center;
+  width: 100%;
+  max-width: 34rem;
+  padding: 2rem 1.5rem;
+  color: var(--h-ink);
+  background: var(--h-paper);
+  border: 2px solid var(--h-ink);
+  border-radius: 18px;
+  animation: home-pop 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes home-pop {
   from {
     opacity: 0;
-    transform: translateY(-20px);
+    transform: translateY(12px) scale(0.97);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
   }
 }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
+.home-container .success-title {
+  margin-bottom: 0.75rem;
+  font-size: 2.1rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--h-red);
+}
+
+.home-container .success-message {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--h-muted);
+}
+
+.home-container .link-container {
+  margin: 1.5rem 0;
+}
+
+.home-container .link-label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: 700;
+}
+
+.home-container .link-display {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.home-container .link-input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.75rem 0.85rem;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 0.85rem;
+  color: var(--h-ink);
+  background: #eef0f0;
+  border: 2px solid var(--h-ink);
+  border-radius: 10px;
+}
+
+.home-container .copy-button {
+  min-width: 6.5rem;
+  padding: 0 1rem;
+  font: inherit;
+  font-weight: 700;
+  color: var(--h-paper);
+  background: var(--h-ink);
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.home-container .copy-button:active {
+  transform: translateY(2px);
+}
+
+.home-container .success-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.home-container .action-button {
+  padding: 0.85rem 1.4rem;
+  font: inherit;
+  font-weight: 900;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.home-container .action-button.primary {
+  color: #fff;
+  background: var(--h-red);
+  border: 0;
+  box-shadow: 0 4px 0 var(--h-red-deep);
+}
+
+.home-container .action-button.primary:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 var(--h-red-deep);
+}
+
+.home-container .action-button.secondary {
+  color: var(--h-ink);
+  background: transparent;
+  border: 2px solid var(--h-ink);
+}
+
+.home-container .action-button.secondary:hover {
+  background: rgba(13, 24, 28, 0.08);
+}
+
+/* Telas maiores: título e passos à esquerda, barra à direita ------------ */
+
+@media (min-width: 60rem) {
+  .home-container {
+    align-items: center;
+    padding: 3rem 2rem;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  .home-container .home-content {
+    max-width: 66rem;
+    grid-template-columns: 1.05fr 0.95fr;
+    grid-template-areas:
+      "header bar"
+      "info bar";
+    column-gap: 4.5rem;
+    row-gap: 2.5rem;
+    align-content: center;
+    align-items: start;
+  }
+
+  .home-container .home-header {
+    grid-area: header;
+  }
+
+  .home-container .home-bar {
+    grid-area: bar;
+    align-self: center;
+    padding: 2.25rem 2rem;
+  }
+
+  .home-container .home-info {
+    grid-area: info;
   }
 }
 
-@keyframes fadeInScale {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
+@media (prefers-reduced-motion: reduce) {
+  .home-container .home-bar::after,
+  .home-container .success-card {
+    animation: none;
   }
-  to {
-    opacity: 1;
-    transform: scale(1);
+
+  .home-container .form-button,
+  .home-container .action-button,
+  .home-container .copy-button {
+    transition: none;
   }
 }
 
-@keyframes bounce {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-@media (max-width: 768px) {
-  .home-title {
-    font-size: 2rem;
-  }
-
-  .title-icon {
-    font-size: 3rem;
-  }
-
-  .title-logo {
-    width: 90px;
-  }
-
-  .title-subtitle {
-    font-size: 1.2rem;
-  }
-
-  .home-description {
-    font-size: 1rem;
-  }
-
-  .home-form-section {
-    padding: var(--spacing-md);
-  }
-
-  .success-card {
-    padding: var(--spacing-md);
-  }
-
-  .success-title {
-    font-size: 1.5rem;
-  }
-
-  .link-display {
+@media (max-width: 30rem) {
+  .home-container .link-display {
     flex-direction: column;
   }
 
-  .copy-button {
-    width: 100%;
+  .home-container .copy-button {
+    padding: 0.75rem 1rem;
   }
-}
-/* Película / overlay */
-.header-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg,
-      rgba(255, 0, 0, 0.6),
-      rgba(0, 128, 0, 0.6));
-  backdrop-filter: blur(0px);
-  /* opcional */
-  z-index: 1;
-}
-
-.home-header {
-  position: relative;
-  z-index: 2;
-  /* fica acima do overlay */
-  text-align: center;
-  color: white;
-}
-
-/* Banner Amigo Chocolate - Rainha das Sete */
-.brand-banner {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 1.5rem;
-  border-radius: 16px;
-  overflow: hidden;
-  background: transparent;
-  box-shadow: none;
-}
-
-.brand-banner-img {
-  display: block;
-  width: 100%;
-  max-width: 320px;
-  height: auto;
 }

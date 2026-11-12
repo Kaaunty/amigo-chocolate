@@ -3,31 +3,60 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: var(--spacing-xl);
-  gap: var(--spacing-md);
+  padding: 3rem 1rem;
+  gap: 1rem;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
-.loading-spinner {
-  position: relative;
+.loading-squares {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
 }
 
-.chocolate-icon {
-  font-size: 3rem;
-  animation: bounce 1s ease-in-out infinite;
+.loading-squares span {
+  width: 22px;
+  height: 22px;
+  background: #0d181c;
+  border-radius: 4px;
+  animation: loading-square 1.2s ease-in-out infinite;
 }
 
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(0) rotate(0deg);
+.loading-squares span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.loading-squares span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.loading-squares span:nth-child(4) {
+  animation-delay: 0.45s;
+}
+
+@keyframes loading-square {
+  0%,
+  60%,
+  100% {
+    background: #0d181c;
   }
-  50% {
-    transform: translateY(-20px) rotate(10deg);
+  30% {
+    background: #e30613;
   }
 }
 
 .loading-text {
-  color: var(--color-text-light);
-  font-size: 1.1rem;
-  font-weight: 500;
+  color: #4a5559;
+  font-size: 1rem;
+  font-weight: 700;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .loading-squares span {
+    animation: none;
+  }
+
+  .loading-squares span:first-child {
+    background: #e30613;
+  }
+}

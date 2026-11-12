@@ -105,7 +105,7 @@ const ParticipantForm = ({ onSuccess }: ParticipantFormProps) => {
           className="form-input"
           value={preferredChocolate}
           onChange={(e) => setPreferredChocolate(e.target.value)}
-          placeholder="Ex: ao leite, amargo, branco, com avelã..."
+          placeholder="Ex: ao leite, amargo, branco..."
           disabled={loading}
         />
       </div>

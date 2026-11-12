@@ -1,37 +1,163 @@
+/*
+  Login do admin, no sistema do Manual de Identidade Visual. O wrapper
+  .admin-container (Admin.css) ganha padding zero só quando o login está
+  na tela, para a página ocupar toda a largura.
+*/
+
+.admin-container:has(.admin-login-container) {
+  padding: 0;
+  display: flex;
+}
+
 .admin-login-container {
+  --a-red: #e30613;
+  --a-red-deep: #a8040e;
+  --a-ink: #0d181c;
+
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 60vh;
-  padding: var(--spacing-lg);
+  padding: 2.5rem 1.25rem 3.5rem;
+  color: var(--a-ink);
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: #fff;
+  border-top: 10px solid var(--a-red);
 }
 
-.admin-login-card {
-  background: var(--color-white);
-  border-radius: var(--border-radius-lg);
-  padding: var(--spacing-xl);
-  box-shadow: var(--shadow-lg);
+.admin-login-container .admin-login-card {
+  --fold: 64px;
+  position: relative;
   width: 100%;
-  max-width: 400px;
+  max-width: 26rem;
+  padding: 1.75rem 1.5rem;
+  color: #fff;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px) 0 0 / 72px
+      72px,
+    linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px) 0 0 /
+      72px 72px,
+    var(--a-ink);
+  border-radius: 18px;
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--fold)) 0,
+    100% var(--fold),
+    100% 100%,
+    0 100%
+  );
 }
 
-.admin-login-title {
-  color: var(--color-brown-dark);
-  font-size: 1.8rem;
-  margin-bottom: var(--spacing-xs);
-  text-align: center;
+.admin-login-container .admin-login-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: var(--fold);
+  height: var(--fold);
+  background: var(--a-red);
+  clip-path: polygon(0 0, 100% 100%, 0 100%);
+  pointer-events: none;
 }
 
-.admin-login-subtitle {
-  color: var(--color-text-light);
-  text-align: center;
-  margin-bottom: var(--spacing-lg);
-  font-size: 0.95rem;
+/* Versão branca oficial do logotipo, para fundo preto */
+.admin-login-container .brand-logo {
+  display: block;
+  width: 130px;
+  height: auto;
+  margin: 0 0 1rem -0.6rem;
 }
 
-.admin-login-form {
+.admin-login-container .admin-login-title {
+  max-width: calc(100% - var(--fold));
+  margin: 0 0 0.35rem;
+  font-size: 1.75rem;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-align: left;
+  color: #fff;
+}
+
+.admin-login-container .admin-login-subtitle {
+  margin: 0 0 1.5rem;
+  font-size: 1rem;
+  text-align: left;
+  color: #cfd6d8;
+}
+
+.admin-login-container .admin-login-form {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
+  gap: 1.1rem;
 }
 
+.admin-login-container .form-label {
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.admin-login-container .form-input {
+  padding: 0.8rem 0.9rem;
+  font: inherit;
+  font-size: 1rem;
+  color: var(--a-ink);
+  background-color: #fff;
+  border: 2px solid transparent;
+  border-radius: 10px;
+}
+
+.admin-login-container .form-input::placeholder {
+  color: #6a7478;
+}
+
+.admin-login-container .form-input:focus {
+  border-color: var(--a-red);
+  box-shadow: 0 0 0 3px rgba(227, 6, 19, 0.5);
+}
+
+.admin-login-container .form-input:disabled {
+  background-color: #dfe3e4;
+}
+
+.admin-login-container .form-error {
+  background: #fff;
+  color: var(--a-red-deep);
+  border-left: 4px solid var(--a-red);
+  border-radius: 8px;
+}
+
+.admin-login-container .form-button {
+  margin-top: 0.25rem;
+  padding: 0.9rem 1.5rem;
+  font: inherit;
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: #fff;
+  background: var(--a-red);
+  border-radius: 10px;
+  box-shadow: 0 4px 0 var(--a-red-deep);
+}
+
+.admin-login-container .form-button:hover:not(:disabled) {
+  background: #f01a27;
+  transform: translateY(-1px);
+  box-shadow: 0 5px 0 var(--a-red-deep);
+}
+
+.admin-login-container .form-button:active:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 var(--a-red-deep);
+}
+
+.admin-login-container .form-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-login-container .form-button {
+    transition: none;
+  }
+}

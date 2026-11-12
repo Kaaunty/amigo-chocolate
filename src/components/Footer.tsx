@@ -5,9 +5,11 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-container">
-        <p className="footer-text">© 2025 Rainha das Sete - Amigo Chocolate</p>
+        <p className="footer-text">
+          © {new Date().getFullYear()} Rainha das Sete. Amigo Chocolate.
+        </p>
         <Link to="/regras" className="footer-link">
-          Regras do Jogo
+          Regras do jogo
         </Link>
       </div>
     </footer>
