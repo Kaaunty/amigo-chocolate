@@ -215,18 +215,21 @@ const Admin = () => {
     );
   }
 
+  const total = drawStatus?.totalParticipants ?? 0;
+  const minimum = drawStatus?.minParticipants ?? 5;
+
   return (
     <div className="admin-container">
       <div className="admin-content">
-        <div className="admin-header">
-          <h1 className="admin-title">
-            <span className="title-icon">👑</span>
-            Painel Administrativo
-          </h1>
+        <header className="admin-header">
+          <div className="admin-brand">
+            <img src="/logo.svg" alt="Rainha das Sete" className="brand-logo" />
+            <h1 className="admin-title">Painel administrativo</h1>
+          </div>
           <button onClick={handleLogout} className="logout-button">
             Sair
           </button>
-        </div>
+        </header>
 
         {error && (
           <div className="admin-error" role="alert">
@@ -234,144 +237,134 @@ const Admin = () => {
           </div>
         )}
 
-        {/* Estatísticas */}
-        <div className="admin-stats">
-          <div className="stat-card">
-            <div className="stat-icon">👥</div>
-            <div className="stat-content">
-              <div className="stat-value">
-                {drawStatus?.totalParticipants || 0}
-              </div>
-              <div className="stat-label">Participantes</div>
-            </div>
+        <section className="admin-summary" aria-label="Resumo do sorteio">
+          <div className="summary-item summary-main">
+            <span className="summary-value">{total}</span>
+            <span className="summary-label">
+              {total === 1 ? "participante cadastrado" : "participantes cadastrados"}
+            </span>
           </div>
-          <div className="stat-card">
-            <div className="stat-icon">🎯</div>
-            <div className="stat-content">
-              <div className="stat-value">
-                {drawStatus?.minParticipants || 5}
-              </div>
-              <div className="stat-label">Mínimo Necessário</div>
-            </div>
+          <div className="summary-item">
+            <span className="summary-value">{minimum}</span>
+            <span className="summary-label">mínimo para sortear</span>
           </div>
-          <div className="stat-card">
-            <div className="stat-icon">{drawStatus?.isDrawn ? "✅" : "⏳"}</div>
-            <div className="stat-content">
-              <div className="stat-value">
-                {drawStatus?.isDrawn ? "Realizado" : "Pendente"}
-              </div>
-              <div className="stat-label">Status do Sorteio</div>
-            </div>
+          <div className="summary-item">
+            <span className="summary-value summary-status">
+              {drawStatus?.isDrawn ? "Realizado" : "Pendente"}
+            </span>
+            <span className="summary-label">status do sorteio</span>
           </div>
-        </div>
+        </section>
 
-        {/* Configurações */}
-        <div className="admin-section">
-          <h2 className="section-title">Configurações</h2>
-          <div className="config-card">
-            <div className="config-item">
-              <label htmlFor="minParticipants" className="config-label">
-                Número Mínimo de Participantes
-              </label>
-              <div className="config-input-group">
-                <input
-                  type="number"
-                  id="minParticipants"
-                  className="config-input"
-                  value={minParticipants}
-                  onChange={(e) =>
-                    setMinParticipants(parseInt(e.target.value) || 2)
-                  }
-                  min="2"
-                />
+        <div className="admin-columns">
+          <div className="admin-side">
+            <section className="admin-section" aria-labelledby="titulo-acoes">
+              <h2 id="titulo-acoes" className="section-title">
+                Ações
+              </h2>
+              <div className="actions-list">
+                {!drawStatus?.isDrawn && drawStatus?.canDraw && (
+                  <button
+                    onClick={handlePerformDraw}
+                    disabled={performingDraw}
+                    className="action-card primary"
+                  >
+                    {performingDraw
+                      ? "Realizando sorteio..."
+                      : "Realizar sorteio"}
+                  </button>
+                )}
+                {drawStatus?.isDrawn && (
+                  <button
+                    onClick={handleSendEmails}
+                    disabled={sendingEmails || participants.length === 0}
+                    className="action-card email"
+                  >
+                    {sendingEmails ? "Enviando e-mails..." : "Enviar e-mails"}
+                  </button>
+                )}
                 <button
-                  onClick={handleUpdateMinParticipants}
-                  disabled={updatingMin}
-                  className="config-button"
+                  onClick={handleExportCSV}
+                  disabled={exporting || participants.length === 0}
+                  className="action-card"
                 >
-                  {updatingMin ? "Salvando..." : "Salvar"}
+                  {exporting ? "Exportando..." : "Exportar CSV"}
+                </button>
+                <button
+                  onClick={handleResetDraw}
+                  disabled={resetting}
+                  className="action-card danger"
+                >
+                  {resetting ? "Reiniciando..." : "Reiniciar sorteio"}
                 </button>
               </div>
-            </div>
-          </div>
-        </div>
+            </section>
 
-        {/* Ações */}
-        <div className="admin-section">
-          <h2 className="section-title">Ações</h2>
-          <div className="actions-grid">
-            {!drawStatus?.isDrawn && drawStatus?.canDraw && (
-              <button
-                onClick={handlePerformDraw}
-                disabled={performingDraw}
-                className="action-card primary"
-              >
-                <span className="action-icon">🎲</span>
-                <span className="action-text">
-                  {performingDraw
-                    ? "Realizando sorteio..."
-                    : "Realizar Sorteio"}
-                </span>
-              </button>
-            )}
-            {drawStatus?.isDrawn && (
-              <button
-                onClick={handleSendEmails}
-                disabled={sendingEmails || participants.length === 0}
-                className="action-card email"
-              >
-                <span className="action-icon">📧</span>
-                <span className="action-text">
-                  {sendingEmails ? "Enviando emails..." : "Enviar Emails"}
-                </span>
-              </button>
-            )}
-            <button
-              onClick={handleExportCSV}
-              disabled={exporting || participants.length === 0}
-              className="action-card"
-            >
-              <span className="action-icon">📥</span>
-              <span className="action-text">
-                {exporting ? "Exportando..." : "Exportar CSV"}
-              </span>
-            </button>
-            <button
-              onClick={handleResetDraw}
-              disabled={resetting}
-              className="action-card danger"
-            >
-              <span className="action-icon">🔄</span>
-              <span className="action-text">
-                {resetting ? "Reiniciando..." : "Reiniciar Sorteio"}
-              </span>
-            </button>
-          </div>
-        </div>
-
-        {/* Lista de Participantes */}
-        <div className="admin-section">
-          <h2 className="section-title">Participantes Cadastrados</h2>
-          {participants.length === 0 ? (
-            <div className="empty-state">
-              <div className="empty-icon">📭</div>
-              <p>Nenhum participante cadastrado ainda.</p>
-            </div>
-          ) : (
-            <div className="participants-list">
-              {participants.map((participant) => (
-                <div key={participant.id} className="participant-item">
-                  <div className="participant-info">
-                    <div className="participant-name">{participant.name}</div>
-                    <div className="participant-email">{participant.email}</div>
-                    <div className="participant-token">
-                      Token: <code>{participant.token}</code>
-                    </div>
-                  </div>
+            <section className="admin-section" aria-labelledby="titulo-config">
+              <h2 id="titulo-config" className="section-title">
+                Configurações
+              </h2>
+              <div className="config-item">
+                <label htmlFor="minParticipants" className="config-label">
+                  Mínimo de participantes
+                </label>
+                <div className="config-input-group">
+                  <input
+                    type="number"
+                    id="minParticipants"
+                    className="config-input"
+                    value={minParticipants}
+                    onChange={(e) =>
+                      setMinParticipants(parseInt(e.target.value) || 2)
+                    }
+                    min="2"
+                  />
+                  <button
+                    onClick={handleUpdateMinParticipants}
+                    disabled={updatingMin}
+                    className="config-button"
+                  >
+                    {updatingMin ? "Salvando..." : "Salvar"}
+                  </button>
                 </div>
-              ))}
-            </div>
-          )}
+              </div>
+            </section>
+          </div>
+
+          <section
+            className="admin-section admin-participants"
+            aria-labelledby="titulo-participantes"
+          >
+            <h2 id="titulo-participantes" className="section-title">
+              Participantes
+              <span className="section-count">{participants.length}</span>
+            </h2>
+            {participants.length === 0 ? (
+              <div className="empty-state">
+                <p className="empty-title">Nenhum participante ainda.</p>
+                <p>
+                  Compartilhe o link da página inicial para as pessoas se
+                  cadastrarem.
+                </p>
+              </div>
+            ) : (
+              <ul className="participants-list">
+                {participants.map((participant) => (
+                  <li key={participant.id} className="participant-item">
+                    <div className="participant-name">{participant.name}</div>
+                    {participant.email && (
+                      <div className="participant-email">
+                        {participant.email}
+                      </div>
+                    )}
+                    <div className="participant-token">
+                      Token <code>{participant.token}</code>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
         </div>
       </div>
     </div>

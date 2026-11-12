@@ -22,7 +22,6 @@
   color: var(--a-ink);
   font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   background: #fff;
-  border-top: 10px solid var(--a-red);
 }
 
 .admin-login-container .admin-login-card {
