@@ -70,34 +70,53 @@ function baseUrl(publicUrl: string): string {
   return publicUrl.replace(/\/+$/, '');
 }
 
-const LOGO =
-  'https://imagens.rainhadassete.com.br/assinatura_rainhadassete/assinatura_arquivos/novas/logo.png';
+const COLOR = {
+  ink: '#0D181C',
+  red: '#E30613',
+  muted: '#4A5559',
+};
+const FONT = "Inter, Arial, Helvetica, sans-serif";
 
-function layout(title: string, content: string): string {
+// Logo da Rainha das Sete, servido pelo proprio site.
+function logoUrl(publicUrl: string): string {
+  return `${baseUrl(publicUrl)}/email-logo.png`;
+}
+
+function layout(title: string, content: string, publicUrl: string): string {
   return `
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${title}</title>
 </head>
-<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f5f5f5;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f5f5f5;">
+<body style="margin: 0; padding: 0; background-color: #ffffff; font-family: ${FONT}; color: ${COLOR.ink};">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #ffffff;">
     <tr>
-      <td align="center" style="padding: 20px 0;">
-        <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border: 1px solid #dddddd;">
-          <!-- Header -->
+      <td align="center">
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width: 100%; max-width: 600px;">
           <tr>
-            <td align="center" style="background-color: #e8e8e8; padding: 30px 20px;">
-              <img src="${LOGO}" alt="Rainha das Sete" width="200" style="display: block; margin: 0 auto 15px;">
-              <h1 style="color: #333333; margin: 0; font-size: 28px; font-weight: bold;">🎁 Amigo Chocolate</h1>
+            <td align="center" style="padding: 40px 24px 32px 24px;">
+              <img src="${escapeHtml(logoUrl(publicUrl))}" alt="Rainha das Sete" width="220" style="display: block; width: 220px; max-width: 100%; height: auto; border: 0;">
             </td>
           </tr>
-          <!-- Content -->
           <tr>
-            <td style="padding: 30px 20px;">
+            <td style="height: 4px; line-height: 4px; font-size: 0; background-color: ${COLOR.red};">&nbsp;</td>
+          </tr>
+          <tr>
+            <td style="padding: 40px 32px 16px 32px;">
 ${content}
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 24px 32px 32px 32px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                <tr><td style="height: 4px; line-height: 4px; font-size: 0; background-color: ${COLOR.red};">&nbsp;</td></tr>
+              </table>
+              <p style="margin: 16px 0 0 0; font-size: 12px; line-height: 1.6; color: ${COLOR.muted}; text-align: center;">
+                Rainha das Sete · Mensagem automática, não responda a este e-mail.
+              </p>
             </td>
           </tr>
         </table>
@@ -109,25 +128,23 @@ ${content}
   `.trim();
 }
 
-const WARNING_BOX = `
-              <!-- Warning Box -->
-              <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #FFE4E1; border-left: 4px solid #DC143C; margin: 20px 0;">
+// Item de lista no estilo da referencia: icone na esquerda, texto na direita.
+function item(icon: string, html: string): string {
+  return `
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin: 0 0 18px 0;">
                 <tr>
-                  <td style="padding: 15px;">
-                    <p style="margin: 0; color: #8B4513; font-size: 14px;">
-                      🔒 <strong>Lembre-se:</strong> Mantenha o segredo! Não conte para ninguém quem você tirou.
-                    </p>
-                  </td>
+                  <td valign="top" width="36" style="font-size: 22px; line-height: 1.3;">${icon}</td>
+                  <td valign="top" style="font-size: 16px; line-height: 1.6; color: ${COLOR.ink};">${html}</td>
                 </tr>
               </table>`;
+}
 
 function button(href: string, label: string): string {
   return `
-              <!-- Button -->
-              <table width="100%" cellpadding="0" cellspacing="0" style="margin: 20px 0;">
+              <table role="presentation" cellpadding="0" cellspacing="0" style="margin: 8px auto 0 auto;">
                 <tr>
-                  <td align="center">
-                    <a href="${escapeHtml(href)}" style="display: inline-block; background-color: #DC143C; color: #ffffff; padding: 12px 30px; text-decoration: none; font-weight: bold; font-size: 16px;">${label}</a>
+                  <td align="center" style="background-color: ${COLOR.red}; border-radius: 6px;">
+                    <a href="${escapeHtml(href)}" style="display: inline-block; padding: 16px 36px; color: #ffffff; text-decoration: none; font-weight: 700; font-size: 16px; font-family: ${FONT};">${label}</a>
                   </td>
                 </tr>
               </table>`;
@@ -145,100 +162,48 @@ export function buildDrawEmailHtml(data: DrawEmailData, publicUrl: string): stri
   const { matchedPreferredChocolate: choc, matchedDislikes: dislikes } = data;
   const link = `${baseUrl(publicUrl)}/participante/${encodeURIComponent(data.token)}`;
 
-  const preferences =
-    choc || dislikes
-      ? `
-              <!-- Preferences Box -->
-              <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #FFF8DC; border: 1px solid #FFD700; margin: 20px 0; border-radius: 8px;">
-                <tr>
-                  <td style="padding: 20px;">${
-                    choc
-                      ? `
-                    <div style="margin-bottom: 15px;">
-                      <p style="margin: 0 0 5px 0; color: #8B4513; font-size: 14px; font-weight: bold;">
-                        🍫 Chocolate Preferido:
-                      </p>
-                      <p style="margin: 0; color: #333333; font-size: 16px; line-height: 1.6;">
-                        ${escapeHtml(choc)}
-                      </p>
-                    </div>`
-                      : ''
-                  }${
-                    dislikes
-                      ? `
-                    <div>
-                      <p style="margin: 0 0 5px 0; color: #8B4513; font-size: 14px; font-weight: bold;">
-                        🚫 Não Gosta De:
-                      </p>
-                      <p style="margin: 0; color: #333333; font-size: 16px; line-height: 1.6;">
-                        ${escapeHtml(dislikes)}
-                      </p>
-                    </div>`
-                      : ''
-                  }
-                  </td>
-                </tr>
-              </table>`
-      : '';
+  const prefs = [
+    choc ? item('🍫', `<strong>Chocolate preferido:</strong> ${escapeHtml(choc)}`) : '',
+    dislikes ? item('🚫', `<strong>Não gosta de:</strong> ${escapeHtml(dislikes)}`) : '',
+  ].join('');
 
   const content = `
-              <h2 style="color: #8B4513; margin: 0 0 15px 0; font-size: 24px;">Olá, ${escapeHtml(data.name)}!</h2>
+              <h1 style="margin: 0 0 12px 0; font-size: 26px; line-height: 1.25; font-weight: 800; color: ${COLOR.red}; text-align: center;">O sorteio do Amigo Chocolate foi realizado! 🎉</h1>
+              <p style="margin: 0 0 32px 0; font-size: 16px; line-height: 1.6; color: ${COLOR.ink}; text-align: center;">Olá, ${escapeHtml(data.name)}! Quem não é louco por chocolate, é louco da cabeça.</p>
 
-              <p style="color: #333333; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">O sorteio do Amigo Chocolate foi realizado! 🎉</p>
+              <p style="margin: 0 0 4px 0; font-size: 15px; color: ${COLOR.muted}; text-align: center;">Seu amigo chocolate é</p>
+              <p style="margin: 0 0 32px 0; font-size: 30px; line-height: 1.2; font-weight: 800; color: ${COLOR.ink}; text-align: center;">${escapeHtml(data.matchedName)}</p>
 
-              <!-- Result Box -->
-              <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #DC143C; margin: 30px 0;">
-                <tr>
-                  <td align="center" style="padding: 20px;">
-                    <p style="margin: 0; color: #ffffff; font-size: 18px; font-weight: bold;">
-                      Seu amigo chocolate é:<br>
-                      <span style="font-size: 24px;">${escapeHtml(data.matchedName)}</span>
-                    </p>
-                  </td>
-                </tr>
-              </table>
-${preferences}
-${WARNING_BOX}
+${prefs}
+${item('🔒', '<strong>Mantenha o segredo!</strong> Não conte para ninguém quem você tirou.')}
+${item('🔗', 'Acesse seu <strong>link único</strong> para ver o resultado a qualquer momento.')}
 
-              <p style="color: #333333; font-size: 16px; line-height: 1.6; margin: 20px 0;">Acesse seu link único para ver o resultado a qualquer momento:</p>
-${button(link, 'Ver Meu Resultado')}
+${button(link, 'Ver meu resultado')}
 
-              <p style="margin-top: 30px; color: #666666; font-size: 14px; line-height: 1.6;">
+              <p style="margin: 32px 0 0 0; font-size: 15px; line-height: 1.6; color: ${COLOR.muted}; text-align: center;">
                 Feliz Natal! 🎅🍫<br>
-                <strong>Rainha das Sete</strong>
+                <strong style="color: ${COLOR.ink};">Rainha das Sete</strong>
               </p>`;
 
-  return layout('Amigo Chocolate - Seu sorteio está pronto!', content);
+  return layout('Amigo Chocolate - Seu sorteio está pronto!', content, publicUrl);
 }
 
 export function buildTestEmailHtml(publicUrl: string): string {
   const content = `
-              <h2 style="color: #8B4513; margin: 0 0 15px 0; font-size: 24px;">Olá! Este é um email de teste 🧪</h2>
+              <h1 style="margin: 0 0 12px 0; font-size: 26px; line-height: 1.25; font-weight: 800; color: ${COLOR.red}; text-align: center;">Olá! A configuração de envio está funcionando ✅</h1>
+              <p style="margin: 0 0 32px 0; font-size: 16px; line-height: 1.6; color: ${COLOR.ink}; text-align: center;">Este é apenas um email de teste para verificar a configuração.</p>
 
-              <p style="color: #333333; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">Se você está recebendo este email, significa que a configuração de envio de emails está funcionando corretamente! ✅</p>
+${item('🎁', '<strong>Exemplo de resultado:</strong> João Silva')}
+${item('🔒', '<strong>Mantenha o segredo!</strong> Não conte para ninguém quem você tirou.')}
 
-              <!-- Result Box -->
-              <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #DC143C; margin: 30px 0;">
-                <tr>
-                  <td align="center" style="padding: 20px;">
-                    <p style="margin: 0; color: #ffffff; font-size: 18px; font-weight: bold;">
-                      Exemplo de resultado:<br>
-                      <span style="font-size: 24px;">João Silva</span>
-                    </p>
-                  </td>
-                </tr>
-              </table>
-${WARNING_BOX}
+${button(baseUrl(publicUrl), 'Acessar sistema')}
 
-              <p style="color: #333333; font-size: 16px; line-height: 1.6; margin: 20px 0;">Este é apenas um email de teste para verificar a configuração.</p>
-${button(baseUrl(publicUrl), 'Acessar Sistema')}
-
-              <p style="margin-top: 30px; color: #666666; font-size: 14px; line-height: 1.6;">
+              <p style="margin: 32px 0 0 0; font-size: 15px; line-height: 1.6; color: ${COLOR.muted}; text-align: center;">
                 Feliz Páscoa! 🐰🍫<br>
-                <strong>Rainha das Sete</strong>
+                <strong style="color: ${COLOR.ink};">Rainha das Sete</strong>
               </p>`;
 
-  return layout('Teste - Amigo Chocolate', content);
+  return layout('Teste - Amigo Chocolate', content, publicUrl);
 }
 
 function resolve(opts: EmailOptions) {
