@@ -119,6 +119,17 @@ O site fica em `http://localhost:3000` (ou em `WEB_PORT`). O compose não sobe s
 - **`PUBLIC_URL`:** use a URL pública real (com `https://`), pois ela entra nos links enviados por e-mail.
 - **Tempo de resposta do sorteio:** o nginx aceita até 300 s, porque o sorteio envia todos os e-mails antes de responder.
 
+### Produção no Coolify (imagens prontas do GHCR)
+
+Para não compilar nada no servidor de produção, o GitHub Actions (`.github/workflows/docker-publish.yml`) constrói as imagens a cada push na `main` e publica em `ghcr.io/kaaunty/amigo-chocolate-api` e `ghcr.io/kaaunty/amigo-chocolate-web` (tags `latest` e `sha-<commit>`). Em pull requests o workflow só constrói, para validar os Dockerfiles.
+
+O Coolify usa o `docker-compose.prod.yml` (só `image:`, sem `build` e sem porta no host): o deploy apenas baixa as imagens.
+
+- **Coolify:** em *Docker Compose Location* use `/docker-compose.prod.yml`. Variáveis obrigatórias: `ADMIN_PASSWORD`, `JWT_SECRET` e `PUBLIC_URL`. O domínio vai no serviço `web` (porta 80).
+- **Primeira publicação:** o GHCR cria os pacotes como privados. Em GitHub → Packages → `amigo-chocolate-api` e `amigo-chocolate-web` → *Package settings* → *Change visibility* → **Public** (o conteúdo é o mesmo do repositório público). Alternativa: `docker login ghcr.io` no servidor com um token `read:packages`.
+- **Rollback:** defina `IMAGE_TAG=sha-<commit>` no Coolify e faça o deploy para voltar a uma versão anterior.
+- **Fluxo:** merge na `main` → esperar o workflow *Docker* terminar → redeploy no Coolify (leva segundos, sem build).
+
 ## 🧪 Testes
 
 ```bash

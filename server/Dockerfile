@@ -1,19 +1,20 @@
 # syntax=docker/dockerfile:1
 
-# ---- deps: instala dependências de produção (better-sqlite3 é nativo) ----
+# ---- deps: dependências de produção ----
+# better-sqlite3 já traz o binário pré-compilado dentro do pacote (prebuilds/linux-x64.node);
+# --ignore-scripts evita o node-gyp (que exigiria python3/make/g++) e não há script necessário.
 FROM node:22-bookworm-slim AS deps
-RUN apt-get update \
- && apt-get install -y --no-install-recommends python3 make g++ \
- && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm ci --omit=dev
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci --omit=dev --ignore-scripts --no-audit --no-fund
 
 # ---- build: compila o TypeScript para dist/ ----
 FROM node:22-bookworm-slim AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm ci --ignore-scripts
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci --ignore-scripts --no-audit --no-fund
 COPY tsconfig.json ./
 COPY src ./src
 RUN npx tsc --noEmit false --outDir dist --declaration false
