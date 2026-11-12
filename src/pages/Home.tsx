@@ -114,6 +114,9 @@ const Home = () => {
             <li>Guarde o link único que você recebe.</li>
             <li>Quando o sorteio sair, abra o link e veja quem você tirou.</li>
           </ol>
+          <p className="privacy">
+            Só você pode ver o resultado, pelo seu link.
+          </p>
         </section>
       </div>
     </div>
