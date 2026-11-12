@@ -86,7 +86,7 @@ const Home = () => {
       <div className="home-backgroud"> </div>
       <div className="home-content">
         <div className="brand-banner">
-          <img src="/banner.png" alt="Amigo Chocolate - Rainha das Sete" className="brand-banner-img" />
+          <img src="/logo.png" alt="Amigo Chocolate - Rainha das Sete" className="brand-banner-img" />
         </div>
   <div className="home-header">
     <h1 className="home-title">
