@@ -4,7 +4,8 @@
 FROM node:22-bookworm-slim AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci --no-audit --no-fund
 COPY . .
 # Em produção o nginx encaminha /api para o backend (mesma origem)
 ARG VITE_API_URL=/api
