@@ -10,10 +10,12 @@ import {
 } from "../services/api";
 import AdminLogin from "../components/AdminLogin";
 import LoadingSpinner from "../components/LoadingSpinner";
+import { useDialog } from "../hooks/useDialog";
 import type { Participant, DrawStatus } from "../types";
 import "./Admin.css";
 
 const Admin = () => {
+  const { confirm, alert, dialog } = useDialog();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
   const [participants, setParticipants] = useState<Participant[]>([]);
@@ -35,6 +37,7 @@ const Admin = () => {
     } else {
       setLoading(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- executa só na montagem
   }, []);
 
   const loadData = async () => {
@@ -48,11 +51,7 @@ const Admin = () => {
       setDrawStatus(statusData);
       setMinParticipants(statusData.minParticipants);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Erro ao carregar dados.");
-      // Se erro 401, desautenticar
-      if (err instanceof Error && err.message.includes("401")) {
-        handleLogout();
-      }
+      handleApiError(err, "Erro ao carregar dados.");
     } finally {
       setLoading(false);
     }
@@ -70,6 +69,17 @@ const Admin = () => {
     setDrawStatus(null);
   };
 
+  // Define a mensagem de erro e desautentica quando a API responde 401
+  const handleApiError = (err: unknown, fallbackMsg: string) => {
+    setError(err instanceof Error ? err.message : fallbackMsg);
+    if (
+      err instanceof Error &&
+      (err.message === "Não autorizado" || err.message.includes("401"))
+    ) {
+      handleLogout();
+    }
+  };
+
   const handleUpdateMinParticipants = async () => {
     if (minParticipants < 2) {
       setError("O número mínimo deve ser pelo menos 2.");
@@ -82,9 +92,7 @@ const Admin = () => {
       await updateMinParticipants({ minParticipants });
       await loadData();
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Erro ao atualizar configuração."
-      );
+      handleApiError(err, "Erro ao atualizar configuração.");
     } finally {
       setUpdatingMin(false);
     }
@@ -92,9 +100,12 @@ const Admin = () => {
 
   const handlePerformDraw = async () => {
     if (
-      !confirm(
-        "Tem certeza que deseja realizar o sorteio agora? Os emails serão enviados automaticamente para todos os participantes."
-      )
+      !(await confirm({
+        title: "Realizar sorteio",
+        message:
+          "Tem certeza que deseja realizar o sorteio agora? Os emails serão enviados automaticamente para todos os participantes.",
+        confirmLabel: "Realizar sorteio",
+      }))
     ) {
       return;
     }
@@ -104,13 +115,14 @@ const Admin = () => {
       setError("");
       await performDraw();
       await loadData();
-      alert(
-        "Sorteio realizado com sucesso! Os emails foram enviados automaticamente para todos os participantes."
-      );
+      await alert({
+        title: "Sorteio realizado",
+        message:
+          "Sorteio realizado com sucesso! Os emails foram enviados automaticamente para todos os participantes.",
+        tone: "success",
+      });
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Erro ao realizar sorteio."
-      );
+      handleApiError(err, "Erro ao realizar sorteio.");
     } finally {
       setPerformingDraw(false);
     }
@@ -118,9 +130,13 @@ const Admin = () => {
 
   const handleResetDraw = async () => {
     if (
-      !confirm(
-        "Tem certeza que deseja reiniciar o sorteio? Esta ação não pode ser desfeita."
-      )
+      !(await confirm({
+        title: "Reiniciar sorteio",
+        message:
+          "Tem certeza que deseja reiniciar o sorteio? Esta ação não pode ser desfeita.",
+        tone: "danger",
+        confirmLabel: "Reiniciar",
+      }))
     ) {
       return;
     }
@@ -130,11 +146,13 @@ const Admin = () => {
       setError("");
       await resetDraw();
       await loadData();
-      alert("Sorteio reiniciado com sucesso!");
+      await alert({
+        title: "Sorteio reiniciado",
+        message: "Sorteio reiniciado com sucesso!",
+        tone: "success",
+      });
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Erro ao reiniciar sorteio."
-      );
+      handleApiError(err, "Erro ao reiniciar sorteio.");
     } finally {
       setResetting(false);
     }
@@ -156,7 +174,7 @@ const Admin = () => {
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Erro ao exportar CSV.");
+      handleApiError(err, "Erro ao exportar CSV.");
     } finally {
       setExporting(false);
     }
@@ -164,14 +182,21 @@ const Admin = () => {
 
   const handleSendEmails = async () => {
     if (!drawStatus?.isDrawn) {
-      alert("O sorteio ainda não foi realizado. Realize o sorteio primeiro.");
+      await alert({
+        title: "Sorteio pendente",
+        message: "O sorteio ainda não foi realizado. Realize o sorteio primeiro.",
+        tone: "error",
+      });
       return;
     }
 
     if (
-      !confirm(
-        "Deseja enviar emails para todos os participantes? Esta ação enviará emails para todos que foram sorteados."
-      )
+      !(await confirm({
+        title: "Enviar e-mails",
+        message:
+          "Deseja enviar emails para todos os participantes? Esta ação enviará emails para todos que foram sorteados.",
+        confirmLabel: "Enviar e-mails",
+      }))
     ) {
       return;
     }
@@ -184,16 +209,18 @@ const Admin = () => {
       if (result.success) {
         const successCount = result.results?.length || 0;
         const errorCount = result.errors?.length || 0;
-        alert(
-          `Emails enviados com sucesso!\n${successCount} emails enviados${
+        await alert({
+          title: "E-mails enviados",
+          message: `Emails enviados com sucesso!\n${successCount} emails enviados${
             errorCount > 0 ? `\n${errorCount} erros` : ""
-          }`
-        );
+          }`,
+          tone: errorCount > 0 ? "error" : "success",
+        });
       } else {
         throw new Error(result.message || "Erro ao enviar emails");
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Erro ao enviar emails.");
+      handleApiError(err, "Erro ao enviar emails.");
     } finally {
       setSendingEmails(false);
     }
@@ -367,6 +394,7 @@ const Admin = () => {
           </section>
         </div>
       </div>
+      {dialog}
     </div>
   );
 };
