@@ -52,6 +52,7 @@ export interface BatchResult {
 
 export const DRAW_SUBJECT = '🎁 Amigo Chocolate - Seu sorteio está pronto!';
 export const TEST_SUBJECT = '🧪 Teste - Amigo Chocolate';
+export const MIN_GIFT_VALUE = 'R$ 50,00';
 
 const defaultClient: EmailClient = {
   post: (url, payload, options) => axios.post(url, payload, options),
@@ -175,6 +176,7 @@ export function buildDrawEmailHtml(data: DrawEmailData, publicUrl: string): stri
               <p style="margin: 0 0 32px 0; font-size: 30px; line-height: 1.2; font-weight: 800; color: ${COLOR.ink}; text-align: center;">${escapeHtml(data.matchedName)}</p>
 
 ${prefs}
+${item('💰', `<strong>Valor mínimo:</strong> ${MIN_GIFT_VALUE}`)}
 ${item('🔒', '<strong>Mantenha o segredo!</strong> Não conte para ninguém quem você tirou.')}
 ${item('🔗', 'Acesse seu <strong>link único</strong> para ver o resultado a qualquer momento.')}
 
@@ -194,6 +196,7 @@ export function buildTestEmailHtml(publicUrl: string): string {
               <p style="margin: 0 0 32px 0; font-size: 16px; line-height: 1.6; color: ${COLOR.ink}; text-align: center;">Este é apenas um email de teste para verificar a configuração.</p>
 
 ${item('🎁', '<strong>Exemplo de resultado:</strong> João Silva')}
+${item('💰', `<strong>Valor mínimo:</strong> ${MIN_GIFT_VALUE}`)}
 ${item('🔒', '<strong>Mantenha o segredo!</strong> Não conte para ninguém quem você tirou.')}
 
 ${button(baseUrl(publicUrl), 'Acessar sistema')}
