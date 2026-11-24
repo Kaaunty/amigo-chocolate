@@ -34,14 +34,6 @@
   justify-items: start;
 }
 
-/* Logotipo reto, sem efeito, acima do mínimo de 100 px */
-.rules-container .brand-logo {
-  display: block;
-  width: 150px;
-  height: auto;
-  margin-left: -0.7rem;
-}
-
 .rules-container .rules-title {
   font-size: clamp(2.5rem, 9vw, 3.75rem);
   font-weight: 900;

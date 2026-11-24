@@ -119,7 +119,6 @@ const Participant = () => {
       />
       <div className="participant-card">
         <header className="participant-header">
-          <img src="/logo.svg" alt="Rainha das Sete" className="brand-logo" />
           <h1 className="participant-title">Olá, {participant.name}!</h1>
           <p className="participant-lead">Seu resultado do Amigo Chocolate</p>
         </header>

@@ -39,7 +39,7 @@ const AdminLogin = ({ onSuccess }: AdminLoginProps) => {
   return (
     <div className="admin-login-container">
       <div className="admin-login-card">
-        <img src="/logo-branco.svg" alt="Rainha das Sete" className="brand-logo" />
+        <p className="brand-logo">Amigo Chocolate</p>
         <h2 className="admin-login-title">Área administrativa</h2>
         <p className="admin-login-subtitle">Digite a senha para entrar.</p>
 

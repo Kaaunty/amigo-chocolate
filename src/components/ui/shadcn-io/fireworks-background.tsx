@@ -48,9 +48,9 @@ export function FireworksBackground({
   const hasPlayedRef = useRef(false);
   const isAnimatingRef = useRef(false);
 
-  // Cores da marca (Manual de Identidade Visual), visíveis sobre fundo branco
+  // Cores, visíveis sobre fundo branco
   const colors = [
-    '#E30613', // Vermelho Rainha das Sete
+    '#E30613', // Vermelho
     '#FF4D5A', // Vermelho claro
     '#A8040E', // Vermelho profundo
     '#0D181C', // Preto

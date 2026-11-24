@@ -6,11 +6,7 @@ const Header = () => {
     <header className="header">
       <div className="header-container">
         <Link to="/" className="header-logo">
-          <img 
-            src="/logo.svg" 
-            alt="Rainha das Sete" 
-            className="logo-image"
-          />
+          <span className="logo-image">Amigo Chocolate</span>
         </Link>
         <nav className="header-nav">
           <Link to="/regras" className="nav-link">

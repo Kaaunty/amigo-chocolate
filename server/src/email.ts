@@ -55,7 +55,10 @@ export const TEST_SUBJECT = '🧪 Teste - Amigo Chocolate';
 export const MIN_GIFT_VALUE = 'R$ 50,00';
 
 const defaultClient: EmailClient = {
-  post: (url, payload, options) => axios.post(url, payload, options),
+  post: (url, payload, options) => {
+    if (!url) return Promise.reject(new Error('EMAIL_API_URL nao configurada.'));
+    return axios.post(url, payload, options);
+  },
 };
 
 export function escapeHtml(value: unknown): string {
@@ -78,12 +81,7 @@ const COLOR = {
 };
 const FONT = "Inter, Arial, Helvetica, sans-serif";
 
-// Logo da Rainha das Sete, servido pelo proprio site.
-function logoUrl(publicUrl: string): string {
-  return `${baseUrl(publicUrl)}/email-logo.png`;
-}
-
-function layout(title: string, content: string, publicUrl: string): string {
+function layout(title: string, content: string): string {
   return `
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -99,7 +97,7 @@ function layout(title: string, content: string, publicUrl: string): string {
         <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width: 100%; max-width: 600px;">
           <tr>
             <td align="center" style="padding: 40px 24px 32px 24px;">
-              <img src="${escapeHtml(logoUrl(publicUrl))}" alt="Rainha das Sete" width="220" style="display: block; width: 220px; max-width: 100%; height: auto; border: 0;">
+              <span style="display: block; font-size: 28px; font-weight: 800; color: ${COLOR.red};">Amigo Chocolate</span>
             </td>
           </tr>
           <tr>
@@ -116,7 +114,7 @@ ${content}
                 <tr><td style="height: 4px; line-height: 4px; font-size: 0; background-color: ${COLOR.red};">&nbsp;</td></tr>
               </table>
               <p style="margin: 16px 0 0 0; font-size: 12px; line-height: 1.6; color: ${COLOR.muted}; text-align: center;">
-                Rainha das Sete · Mensagem automática, não responda a este e-mail.
+                Amigo Chocolate · Mensagem automática, não responda a este e-mail.
               </p>
             </td>
           </tr>
@@ -184,10 +182,10 @@ ${button(link, 'Ver meu resultado')}
 
               <p style="margin: 32px 0 0 0; font-size: 15px; line-height: 1.6; color: ${COLOR.muted}; text-align: center;">
                 Feliz Natal! 🎅🍫<br>
-                <strong style="color: ${COLOR.ink};">Rainha das Sete</strong>
+                <strong style="color: ${COLOR.ink};">Amigo Chocolate</strong>
               </p>`;
 
-  return layout('Amigo Chocolate - Seu sorteio está pronto!', content, publicUrl);
+  return layout('Amigo Chocolate - Seu sorteio está pronto!', content);
 }
 
 export function buildTestEmailHtml(publicUrl: string): string {
@@ -203,10 +201,10 @@ ${button(baseUrl(publicUrl), 'Acessar sistema')}
 
               <p style="margin: 32px 0 0 0; font-size: 15px; line-height: 1.6; color: ${COLOR.muted}; text-align: center;">
                 Feliz Páscoa! 🐰🍫<br>
-                <strong style="color: ${COLOR.ink};">Rainha das Sete</strong>
+                <strong style="color: ${COLOR.ink};">Amigo Chocolate</strong>
               </p>`;
 
-  return layout('Teste - Amigo Chocolate', content, publicUrl);
+  return layout('Teste - Amigo Chocolate', content);
 }
 
 function resolve(opts: EmailOptions) {

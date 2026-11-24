@@ -59,12 +59,11 @@
   pointer-events: none;
 }
 
-/* Versão branca oficial do logotipo, para fundo preto */
 .admin-login-container .brand-logo {
-  display: block;
-  width: 130px;
-  height: auto;
-  margin: 0 0 1rem -0.6rem;
+  margin: 0 0 1rem;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #fff;
 }
 
 .admin-login-container .admin-login-title {

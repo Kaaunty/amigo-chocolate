@@ -1,4 +1,4 @@
-# Amigo Chocolate - Rainha das Sete
+# Amigo Chocolate
 
 Site interativo para realização de sorteio entre colaboradores no estilo "Amigo Secreto" temático de chocolate.
 
@@ -63,10 +63,6 @@ cp .env.example .env
 ```
 
 Em desenvolvimento, mantenha `VITE_API_URL=/api` (o proxy do Vite encaminha para o backend). Em produção, aponte para a URL pública da API, ex.: `VITE_API_URL=https://api.seudominio.com/api`.
-
-4. Adicione o logo da Rainha das Sete:
-   - Coloque o arquivo `logo.png` na pasta `public/`
-   - O sistema usará um placeholder caso o arquivo não exista
 
 ## 🚀 Executando
 

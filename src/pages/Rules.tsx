@@ -6,7 +6,6 @@ const Rules = () => {
     <div className="rules-container">
       <div className="rules-content">
         <header className="rules-header">
-          <img src="/logo.svg" alt="Rainha das Sete" className="brand-logo" />
           <h1 className="rules-title">Regras do jogo</h1>
           <p className="rules-lead">
             Seis combinados para o Amigo Chocolate dar certo.

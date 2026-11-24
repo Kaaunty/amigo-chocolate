@@ -1,5 +1,5 @@
 /*
-  Home, seguindo o Manual de Identidade Visual da Rainha das Sete:
+  Home, identidade visual própria:
   vermelho #E30613, preto #0D181C, branco e Inter. O formulário é uma barra
   de chocolate preta com a ponta do papel dobrada em vermelho.
   Tudo escopado em .home-container para não vazar para as outras telas.
@@ -36,14 +36,6 @@
   display: grid;
   gap: 1.25rem;
   justify-items: start;
-}
-
-/* Logotipo reto, sem sombra nem efeito, acima do mínimo de 100 px */
-.home-container .brand-logo {
-  display: block;
-  width: 190px;
-  height: auto;
-  margin-left: -0.9rem;
 }
 
 .home-container .home-title {

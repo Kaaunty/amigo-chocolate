@@ -42,14 +42,6 @@
   gap: 0.5rem;
 }
 
-/* Logotipo reto, sem efeito, acima do mínimo de 100 px */
-.admin-container .brand-logo {
-  display: block;
-  width: 130px;
-  height: auto;
-  margin-left: -0.6rem;
-}
-
 .admin-container .admin-title {
   font-size: clamp(1.9rem, 5vw, 2.75rem);
   font-weight: 900;

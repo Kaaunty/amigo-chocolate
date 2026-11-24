@@ -250,7 +250,6 @@ const Admin = () => {
       <div className="admin-content">
         <header className="admin-header">
           <div className="admin-brand">
-            <img src="/logo.svg" alt="Rainha das Sete" className="brand-logo" />
             <h1 className="admin-title">Painel administrativo</h1>
           </div>
           <button onClick={handleLogout} className="logout-button">

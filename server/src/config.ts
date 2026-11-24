@@ -51,9 +51,7 @@ export const config = {
   ADMIN_PASSWORD: adminPassword as string,
   JWT_SECRET: jwtSecret as string,
   PUBLIC_URL: process.env.PUBLIC_URL ?? 'http://localhost:3000',
-  EMAIL_API_URL:
-    process.env.EMAIL_API_URL ??
-    'https://api-erp.rainhadassete.com.br/Email/enviar',
+  EMAIL_API_URL: process.env.EMAIL_API_URL ?? '',
   EMAIL_SEND_DELAY_MS: Math.max(0, Number(process.env.EMAIL_SEND_DELAY_MS) || 0),
   TRUST_PROXY: ['1', 'true'].includes((process.env.TRUST_PROXY ?? '').trim().toLowerCase()),
   CORS_ORIGIN: process.env.CORS_ORIGIN ?? 'http://localhost:3000',

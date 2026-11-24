@@ -6,7 +6,7 @@ const Footer = () => {
     <footer className="footer">
       <div className="footer-container">
         <p className="footer-text">
-          © {new Date().getFullYear()} Rainha das Sete. Amigo Chocolate.
+          © {new Date().getFullYear()} Amigo Chocolate.
         </p>
         <Link to="/regras" className="footer-link">
           Regras do jogo

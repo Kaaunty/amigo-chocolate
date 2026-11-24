@@ -41,14 +41,6 @@
   justify-items: start;
 }
 
-/* Logotipo reto, sem efeito, acima do mínimo de 100 px */
-.participant-container .brand-logo {
-  display: block;
-  width: 150px;
-  height: auto;
-  margin-left: -0.7rem;
-}
-
 .participant-container .participant-title {
   font-size: clamp(2.25rem, 8vw, 3.5rem);
   font-weight: 900;

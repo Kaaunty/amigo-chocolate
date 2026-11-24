@@ -86,15 +86,7 @@ const Home = () => {
     <div className="home-container">
       <div className="home-content">
         <header className="home-header">
-          <img
-            src="/logo.svg"
-            alt="Rainha das Sete"
-            className="brand-logo"
-          />
-          <h1 className="home-title">
-            Amigo Chocolate
-            <span className="visually-hidden"> Rainha das Sete</span>
-          </h1>
+          <h1 className="home-title">Amigo Chocolate</h1>
           <p className="home-description">
             Cadastre seu nome, receba um link só seu e descubra em segredo
             quem você vai presentear com chocolate.
