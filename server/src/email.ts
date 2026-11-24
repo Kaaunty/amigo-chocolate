@@ -56,7 +56,6 @@ export const MIN_GIFT_VALUE = 'R$ 50,00';
 
 const defaultClient: EmailClient = {
   post: (url, payload, options) => {
-    if (!url) return Promise.reject(new Error('EMAIL_API_URL nao configurada.'));
     return axios.post(url, payload, options);
   },
 };
