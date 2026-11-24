@@ -30,7 +30,7 @@ const ParticipantForm = ({ onSuccess }: ParticipantFormProps) => {
     }
 
     if (!email.trim()) {
-      setError("Por favor, informe seu e-mail corporativo.");
+      setError("Por favor, informe seu e-mail.");
       return;
     }
 
@@ -80,7 +80,7 @@ const ParticipantForm = ({ onSuccess }: ParticipantFormProps) => {
 
       <div className="form-group">
         <label htmlFor="email" className="form-label">
-          E-mail Corporativo
+          E-mail
         </label>
         <input
           type="email"
@@ -88,7 +88,7 @@ const ParticipantForm = ({ onSuccess }: ParticipantFormProps) => {
           className="form-input"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="seu.email@empresa.com"
+          placeholder="seu.email@exemplo.com"
           disabled={loading}
           required
         />
