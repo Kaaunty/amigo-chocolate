@@ -1,17 +1,17 @@
 /*
   Resultado do participante, no mesmo sistema da Home (Manual de Identidade
-  Visual): vermelho #E30613, preto #0D181C, branco e Inter. A revelação é a
+  Visual): vermelho #9c5a0c, preto #2a1810, branco e Inter. A revelação é a
   barra de chocolate embrulhada que se abre. Tudo escopado em
   .participant-container; só o keyframe fadeInScale é global porque o
   Admin.css também o usa.
 */
 
 .participant-container {
-  --p-red: #e30613;
-  --p-red-deep: #a8040e;
-  --p-ink: #0d181c;
+  --p-red: #9c5a0c;
+  --p-red-deep: #744207;
+  --p-ink: #2a1810;
   --p-paper: #ffffff;
-  --p-muted: #4a5559;
+  --p-muted: #6b5a52;
 
   flex: 1;
   display: flex;
@@ -85,7 +85,7 @@
 
 .participant-container .progress-bar {
   height: 14px;
-  background: #e4e8e9;
+  background: #e6dbd1;
   border-radius: 7px;
   overflow: hidden;
 }
@@ -165,13 +165,13 @@
 .participant-container .wrapper-closed-text {
   font-size: 1rem;
   line-height: 1.5;
-  color: #cfd6d8;
+  color: #e0d4ca;
 }
 
 .participant-container .wrapper-label {
   font-size: 1rem;
   font-weight: 700;
-  color: #cfd6d8;
+  color: #e0d4ca;
 }
 
 /* O nome sobe de dentro da barra, uma vez */
@@ -276,7 +276,7 @@
 
 .participant-container .action-button.primary:hover,
 .participant-container .action-button.reveal:hover {
-  background: #f01a27;
+  background: #b8741a;
 }
 
 .participant-container .action-button.primary:active,
@@ -292,7 +292,7 @@
 }
 
 .participant-container .action-button.secondary:hover {
-  background: rgba(13, 24, 28, 0.08);
+  background: rgba(42, 24, 16, 0.08);
 }
 
 .participant-container .action-button:focus-visible {

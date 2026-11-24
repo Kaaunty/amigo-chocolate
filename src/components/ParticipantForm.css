@@ -31,7 +31,7 @@
 .form-input:focus {
   outline: none;
   border-color: var(--color-gold);
-  box-shadow: 0 0 0 3px rgba(229, 9, 32, 0.1);
+  box-shadow: 0 0 0 3px rgba(156, 90, 12, 0.1);
 }
 
 .form-input:disabled {
@@ -44,7 +44,7 @@
 }
 
 .form-error {
-  background-color: #ffebee;
+  background-color: #f7ebda;
   color: #c62828;
   padding: var(--spacing-sm);
   border-radius: var(--border-radius-sm);

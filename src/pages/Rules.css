@@ -1,14 +1,14 @@
 /*
-  Regras, no sistema do Manual de Identidade Visual: vermelho #E30613,
-  preto #0D181C, branco e Inter. A regra do segredo é a peça de destaque
+  Regras, no sistema do Manual de Identidade Visual: vermelho #9c5a0c,
+  preto #2a1810, branco e Inter. A regra do segredo é a peça de destaque
   (barra preta com a ponta vermelha dobrada); as outras ficam quietas.
 */
 
 .rules-container {
-  --r-red: #e30613;
-  --r-red-deep: #a8040e;
-  --r-ink: #0d181c;
-  --r-muted: #4a5559;
+  --r-red: #9c5a0c;
+  --r-red-deep: #744207;
+  --r-ink: #2a1810;
+  --r-muted: #6b5a52;
 
   flex: 1;
   display: flex;
@@ -94,7 +94,7 @@
   max-width: 32rem;
   font-size: 1.05rem;
   line-height: 1.6;
-  color: #e3e8ea;
+  color: #e6dbd1;
 }
 
 /* Demais regras */
@@ -151,7 +151,7 @@
 }
 
 .rules-container .rules-back:hover {
-  background: #f01a27;
+  background: #b8741a;
 }
 
 .rules-container .rules-back:active {

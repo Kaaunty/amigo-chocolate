@@ -27,6 +27,8 @@ const Admin = () => {
   const [exporting, setExporting] = useState(false);
   const [sendingEmails, setSendingEmails] = useState(false);
   const [error, setError] = useState("");
+  const [search, setSearch] = useState("");
+  const [copiedId, setCopiedId] = useState<string | null>(null);
 
   useEffect(() => {
     // Verificar se já está autenticado
@@ -244,14 +246,84 @@ const Admin = () => {
 
   const total = drawStatus?.totalParticipants ?? 0;
   const minimum = drawStatus?.minParticipants ?? 5;
+  const isDrawn = Boolean(drawStatus?.isDrawn);
+  const canDraw = Boolean(drawStatus?.canDraw);
+  const stage: "cadastro" | "sorteio" | "emails" = isDrawn
+    ? "emails"
+    : canDraw
+      ? "sorteio"
+      : "cadastro";
+  const missing = Math.max(0, minimum - total);
+
+  const steps = [
+    {
+      id: "cadastro",
+      title: "Cadastro",
+      detail: `${total} cadastrados, mínimo ${minimum}`,
+      done: stage !== "cadastro",
+    },
+    {
+      id: "sorteio",
+      title: "Sorteio",
+      detail: isDrawn ? "Realizado" : "Pendente",
+      done: isDrawn,
+    },
+    {
+      id: "emails",
+      title: "E-mails",
+      detail: isDrawn ? "Disparados no sorteio" : "Saem com o sorteio",
+      done: isDrawn,
+    },
+  ] as const;
+
+  const headline = {
+    cadastro:
+      missing === 1
+        ? "Falta 1 participante para sortear"
+        : `Faltam ${missing} participantes para sortear`,
+    sorteio: "Tudo pronto para sortear",
+    emails: "Sorteio realizado",
+  }[stage];
+
+  const subline = {
+    cadastro: "Compartilhe o link da página inicial para as pessoas se cadastrarem.",
+    sorteio: `${total} participantes cadastrados. Os e-mails saem junto com o sorteio.`,
+    emails:
+      "O sorteio disparou os e-mails com o link de cada um. Se algum falhou ou não chegou, reenvie.",
+  }[stage];
+
+  const query = search.trim().toLowerCase();
+  const visibleParticipants = query
+    ? participants.filter(
+        (p) =>
+          p.name.toLowerCase().includes(query) ||
+          (p.email ?? "").toLowerCase().includes(query),
+      )
+    : participants;
+
+  const handleCopyLink = async (participant: Participant) => {
+    const link = `${window.location.origin}/participante/${participant.token}`;
+    try {
+      await navigator.clipboard.writeText(link);
+      setCopiedId(participant.id);
+      window.setTimeout(
+        () => setCopiedId((current) => (current === participant.id ? null : current)),
+        2000,
+      );
+    } catch {
+      await alert({
+        title: "Não foi possível copiar",
+        message: link,
+        tone: "error",
+      });
+    }
+  };
 
   return (
     <div className="admin-container">
       <div className="admin-content">
         <header className="admin-header">
-          <div className="admin-brand">
-            <h1 className="admin-title">Painel administrativo</h1>
-          </div>
+          <h1 className="admin-title">Painel administrativo</h1>
           <button onClick={handleLogout} className="logout-button">
             Sair
           </button>
@@ -263,69 +335,127 @@ const Admin = () => {
           </div>
         )}
 
-        <section className="admin-summary" aria-label="Resumo do sorteio">
-          <div className="summary-item summary-main">
-            <span className="summary-value">{total}</span>
-            <span className="summary-label">
-              {total === 1 ? "participante cadastrado" : "participantes cadastrados"}
-            </span>
-          </div>
-          <div className="summary-item">
-            <span className="summary-value">{minimum}</span>
-            <span className="summary-label">mínimo para sortear</span>
-          </div>
-          <div className="summary-item">
-            <span className="summary-value summary-status">
-              {drawStatus?.isDrawn ? "Realizado" : "Pendente"}
-            </span>
-            <span className="summary-label">status do sorteio</span>
+        <section className="admin-stage" aria-labelledby="titulo-etapa">
+          <ol className="stage-steps">
+            {steps.map((step, index) => (
+              <li
+                key={step.id}
+                className={`stage-step${step.done ? " is-done" : ""}${
+                  step.id === stage ? " is-current" : ""
+                }`}
+                aria-current={step.id === stage ? "step" : undefined}
+              >
+                <span className="stage-step-mark" aria-hidden="true">
+                  {step.done ? "✓" : index + 1}
+                </span>
+                <span className="stage-step-title">{step.title}</span>
+                <span className="stage-step-detail">{step.detail}</span>
+              </li>
+            ))}
+          </ol>
+
+          <div className="stage-body">
+            <div className="stage-text">
+              <h2 id="titulo-etapa" className="stage-headline">
+                {headline}
+              </h2>
+              <p className="stage-subline">{subline}</p>
+            </div>
+            {stage === "sorteio" && (
+              <button
+                onClick={handlePerformDraw}
+                disabled={performingDraw}
+                className="stage-action"
+              >
+                {performingDraw ? "Realizando sorteio..." : "Realizar sorteio"}
+              </button>
+            )}
+            {stage === "emails" && (
+              <button
+                onClick={handleSendEmails}
+                disabled={sendingEmails || participants.length === 0}
+                className="stage-action"
+              >
+                {sendingEmails ? "Enviando e-mails..." : "Reenviar e-mails"}
+              </button>
+            )}
           </div>
         </section>
 
         <div className="admin-columns">
-          <div className="admin-side">
-            <section className="admin-section" aria-labelledby="titulo-acoes">
-              <h2 id="titulo-acoes" className="section-title">
-                Ações
-              </h2>
-              <div className="actions-list">
-                {!drawStatus?.isDrawn && drawStatus?.canDraw && (
-                  <button
-                    onClick={handlePerformDraw}
-                    disabled={performingDraw}
-                    className="action-card primary"
-                  >
-                    {performingDraw
-                      ? "Realizando sorteio..."
-                      : "Realizar sorteio"}
-                  </button>
-                )}
-                {drawStatus?.isDrawn && (
-                  <button
-                    onClick={handleSendEmails}
-                    disabled={sendingEmails || participants.length === 0}
-                    className="action-card email"
-                  >
-                    {sendingEmails ? "Enviando e-mails..." : "Enviar e-mails"}
-                  </button>
-                )}
-                <button
-                  onClick={handleExportCSV}
-                  disabled={exporting || participants.length === 0}
-                  className="action-card"
-                >
-                  {exporting ? "Exportando..." : "Exportar CSV"}
-                </button>
-                <button
-                  onClick={handleResetDraw}
-                  disabled={resetting}
-                  className="action-card danger"
-                >
-                  {resetting ? "Reiniciando..." : "Reiniciar sorteio"}
-                </button>
-              </div>
-            </section>
+          <section
+            className="admin-section admin-participants"
+            aria-labelledby="titulo-participantes"
+          >
+            <h2 id="titulo-participantes" className="section-title">
+              Participantes
+              <span className="section-count">{participants.length}</span>
+            </h2>
 
+            {participants.length === 0 ? (
+              <div className="empty-state">
+                <p className="empty-title">Nenhum participante ainda.</p>
+                <p>
+                  Compartilhe o link da página inicial para as pessoas se
+                  cadastrarem.
+                </p>
+              </div>
+            ) : (
+              <>
+                <div className="participants-search">
+                  <label htmlFor="busca" className="visually-hidden">
+                    Buscar participante
+                  </label>
+                  <input
+                    id="busca"
+                    type="search"
+                    className="config-input"
+                    placeholder="Buscar por nome ou e-mail"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                  />
+                </div>
+                {visibleParticipants.length === 0 ? (
+                  <p className="empty-state">
+                    Nenhum participante encontrado para “{search.trim()}”.
+                  </p>
+                ) : (
+                  <ul
+                    className="participants-list"
+                    tabIndex={0}
+                    aria-label="Lista de participantes"
+                  >
+                    {visibleParticipants.map((participant) => (
+                      <li key={participant.id} className="participant-item">
+                        <div className="participant-info">
+                          <div className="participant-name">
+                            {participant.name}
+                          </div>
+                          {participant.email && (
+                            <div className="participant-email">
+                              {participant.email}
+                            </div>
+                          )}
+                        </div>
+                        <button
+                          type="button"
+                          className="copy-link"
+                          onClick={() => handleCopyLink(participant)}
+                          aria-label={`Copiar link de ${participant.name}`}
+                        >
+                          {copiedId === participant.id
+                            ? "Link copiado"
+                            : "Copiar link"}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </>
+            )}
+          </section>
+
+          <div className="admin-side">
             <section className="admin-section" aria-labelledby="titulo-config">
               <h2 id="titulo-config" className="section-title">
                 Configurações
@@ -355,42 +485,29 @@ const Admin = () => {
                 </div>
               </div>
             </section>
-          </div>
 
-          <section
-            className="admin-section admin-participants"
-            aria-labelledby="titulo-participantes"
-          >
-            <h2 id="titulo-participantes" className="section-title">
-              Participantes
-              <span className="section-count">{participants.length}</span>
-            </h2>
-            {participants.length === 0 ? (
-              <div className="empty-state">
-                <p className="empty-title">Nenhum participante ainda.</p>
-                <p>
-                  Compartilhe o link da página inicial para as pessoas se
-                  cadastrarem.
-                </p>
+            <section className="admin-section" aria-labelledby="titulo-dados">
+              <h2 id="titulo-dados" className="section-title">
+                Dados
+              </h2>
+              <div className="actions-list">
+                <button
+                  onClick={handleExportCSV}
+                  disabled={exporting || participants.length === 0}
+                  className="action-card"
+                >
+                  {exporting ? "Exportando..." : "Exportar CSV"}
+                </button>
+                <button
+                  onClick={handleResetDraw}
+                  disabled={resetting}
+                  className="action-card danger"
+                >
+                  {resetting ? "Reiniciando..." : "Reiniciar sorteio"}
+                </button>
               </div>
-            ) : (
-              <ul className="participants-list">
-                {participants.map((participant) => (
-                  <li key={participant.id} className="participant-item">
-                    <div className="participant-name">{participant.name}</div>
-                    {participant.email && (
-                      <div className="participant-email">
-                        {participant.email}
-                      </div>
-                    )}
-                    <div className="participant-token">
-                      Token <code>{participant.token}</code>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </section>
+            </section>
+          </div>
         </div>
       </div>
       {dialog}

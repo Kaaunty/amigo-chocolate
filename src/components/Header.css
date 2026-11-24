@@ -50,7 +50,7 @@
 }
 
 .nav-link:hover {
-  background-color: rgba(229, 9, 32, 0.1);
+  background-color: rgba(156, 90, 12, 0.1);
   color: var(--color-brown-dark);
 }
 

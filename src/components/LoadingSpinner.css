@@ -17,7 +17,7 @@
 .loading-squares span {
   width: 22px;
   height: 22px;
-  background: #0d181c;
+  background: #2a1810;
   border-radius: 4px;
   animation: loading-square 1.2s ease-in-out infinite;
 }
@@ -38,15 +38,15 @@
   0%,
   60%,
   100% {
-    background: #0d181c;
+    background: #2a1810;
   }
   30% {
-    background: #e30613;
+    background: #9c5a0c;
   }
 }
 
 .loading-text {
-  color: #4a5559;
+  color: #6b5a52;
   font-size: 1rem;
   font-weight: 700;
 }
@@ -57,6 +57,6 @@
   }
 
   .loading-squares span:first-child {
-    background: #e30613;
+    background: #9c5a0c;
   }
 }

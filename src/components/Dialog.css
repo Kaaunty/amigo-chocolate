@@ -1,15 +1,15 @@
 /*
   Diálogo modal, no sistema visual do painel admin
-  (Admin.css): vermelho #E30613, preto #0D181C, branco e Inter. Usa as
+  (Admin.css): vermelho #9c5a0c, preto #2a1810, branco e Inter. Usa as
   variáveis globais de espaçamento, raio, sombra e transição de global.css.
 */
 
 .ui-dialog {
-  --dl-red: #e30613;
-  --dl-red-deep: #a8040e;
-  --dl-ink: #0d181c;
-  --dl-ink-soft: #24343a;
-  --dl-muted: #4a5559;
+  --dl-red: #9c5a0c;
+  --dl-red-deep: #744207;
+  --dl-ink: #2a1810;
+  --dl-ink-soft: #4a3228;
+  --dl-muted: #6b5a52;
 
   /* Zera o visual padrão do <dialog> nativo; o cartão é que aparece */
   padding: 0;
@@ -34,7 +34,7 @@
 }
 
 .ui-dialog::backdrop {
-  background: rgba(13, 24, 28, 0.6);
+  background: rgba(42, 24, 16, 0.6);
 }
 
 .ui-dialog[open]::backdrop {
@@ -129,7 +129,7 @@
 }
 
 .ui-dialog .dialog-button:hover {
-  background: rgba(13, 24, 28, 0.08);
+  background: rgba(42, 24, 16, 0.08);
 }
 
 .ui-dialog .dialog-button.primary {
@@ -151,7 +151,7 @@
 
 .ui-dialog.tone-danger .dialog-button.primary:hover,
 .ui-dialog.tone-error .dialog-button.primary:hover {
-  background: #f01a27;
+  background: #b8741a;
 }
 
 .ui-dialog .dialog-button:focus-visible {

@@ -10,9 +10,9 @@
 }
 
 .admin-login-container {
-  --a-red: #e30613;
-  --a-red-deep: #a8040e;
-  --a-ink: #0d181c;
+  --a-red: #9c5a0c;
+  --a-red-deep: #744207;
+  --a-ink: #2a1810;
 
   flex: 1;
   display: flex;
@@ -81,7 +81,7 @@
   margin: 0 0 1.5rem;
   font-size: 1rem;
   text-align: left;
-  color: #cfd6d8;
+  color: #e0d4ca;
 }
 
 .admin-login-container .admin-login-form {
@@ -107,16 +107,16 @@
 }
 
 .admin-login-container .form-input::placeholder {
-  color: #6a7478;
+  color: #8a7a72;
 }
 
 .admin-login-container .form-input:focus {
   border-color: var(--a-red);
-  box-shadow: 0 0 0 3px rgba(227, 6, 19, 0.5);
+  box-shadow: 0 0 0 3px rgba(156, 90, 12, 0.5);
 }
 
 .admin-login-container .form-input:disabled {
-  background-color: #dfe3e4;
+  background-color: #eadfd6;
 }
 
 .admin-login-container .form-error {
@@ -139,7 +139,7 @@
 }
 
 .admin-login-container .form-button:hover:not(:disabled) {
-  background: #f01a27;
+  background: #b8741a;
   transform: translateY(-1px);
   box-shadow: 0 5px 0 var(--a-red-deep);
 }

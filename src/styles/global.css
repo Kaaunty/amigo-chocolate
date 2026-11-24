@@ -1,16 +1,16 @@
 :root {
   /* Paleta de cores temática */
-  --color-brown-dark: #6B2D16;
-  --color-brown-medium: #A65324;
-  --color-brown-light: #A65324;
-  --color-brown-lighter: #A65324;
-  --color-gold-dark: #B80719;
-  --color-gold: #E50920;
-  --color-cream-dark: #EED9B5;
-  --color-cream: #F8EFDC;
+  --color-brown-dark: #2a1810;
+  --color-brown-medium: #5a3a2c;
+  --color-brown-light: #5a3a2c;
+  --color-brown-lighter: #5a3a2c;
+  --color-gold-dark: #744207;
+  --color-gold: #9c5a0c;
+  --color-cream-dark: #e6dbd1;
+  --color-cream: #f3ece5;
   --color-white: #FFFFFF;
-  --color-text-dark: #3E2723;
-  --color-text-light: #5D4037;
+  --color-text-dark: #2a1810;
+  --color-text-light: #6b5a52;
   
   /* Espaçamentos */
   --spacing-xs: 0.5rem;
@@ -25,9 +25,9 @@
   --border-radius-lg: 16px;
   
   /* Sombras */
-  --shadow-sm: 0 2px 4px rgba(107, 45, 22, 0.1);
-  --shadow-md: 0 4px 8px rgba(107, 45, 22, 0.15);
-  --shadow-lg: 0 8px 16px rgba(107, 45, 22, 0.2);
+  --shadow-sm: 0 2px 4px rgba(42, 24, 16, 0.1);
+  --shadow-md: 0 4px 8px rgba(42, 24, 16, 0.15);
+  --shadow-lg: 0 8px 16px rgba(42, 24, 16, 0.2);
   
   /* Transições */
   --transition-fast: 0.2s ease;
@@ -47,7 +47,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(135deg, #FFFBF3 0%, #F8EFDC 100%);
+  background: linear-gradient(135deg, #faf7f3 0%, #f3ece5 100%);
   color: var(--color-text-dark);
   min-height: 100vh;
   line-height: 1.6;
@@ -74,11 +74,11 @@ code {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #0d181c;
+  background: #2a1810;
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #e30613;
+  background: #9c5a0c;
 }
 

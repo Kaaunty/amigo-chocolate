@@ -1,16 +1,16 @@
 /*
   Home, identidade visual própria:
-  vermelho #E30613, preto #0D181C, branco e Inter. O formulário é uma barra
+  vermelho #9c5a0c, preto #2a1810, branco e Inter. O formulário é uma barra
   de chocolate preta com a ponta do papel dobrada em vermelho.
   Tudo escopado em .home-container para não vazar para as outras telas.
 */
 
 .home-container {
-  --h-red: #e30613;
-  --h-red-deep: #a8040e;
-  --h-ink: #0d181c;
+  --h-red: #9c5a0c;
+  --h-red-deep: #744207;
+  --h-ink: #2a1810;
   --h-paper: #ffffff;
-  --h-muted: #4a5559;
+  --h-muted: #6b5a52;
 
   flex: 1;
   display: flex;
@@ -147,16 +147,16 @@
 }
 
 .home-container .form-input::placeholder {
-  color: #6a7478;
+  color: #8a7a72;
 }
 
 .home-container .form-input:focus {
   border-color: var(--h-red);
-  box-shadow: 0 0 0 3px rgba(227, 6, 19, 0.5);
+  box-shadow: 0 0 0 3px rgba(156, 90, 12, 0.5);
 }
 
 .home-container .form-input:disabled {
-  background-color: #dfe3e4;
+  background-color: #eadfd6;
 }
 
 .home-container .form-error {
@@ -179,7 +179,7 @@
 }
 
 .home-container .form-button:hover:not(:disabled) {
-  background: #f01a27;
+  background: #b8741a;
   transform: translateY(-1px);
   box-shadow: 0 5px 0 var(--h-red-deep);
 }
@@ -302,7 +302,7 @@
   font-family: ui-monospace, Menlo, Consolas, monospace;
   font-size: 0.85rem;
   color: var(--h-ink);
-  background: #eef0f0;
+  background: #f3ece5;
   border: 2px solid var(--h-ink);
   border-radius: 10px;
 }
@@ -356,7 +356,7 @@
 }
 
 .home-container .action-button.secondary:hover {
-  background: rgba(13, 24, 28, 0.08);
+  background: rgba(42, 24, 16, 0.08);
 }
 
 /* Telas maiores: título e passos à esquerda, barra à direita ------------ */

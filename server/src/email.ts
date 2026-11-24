@@ -74,9 +74,9 @@ function baseUrl(publicUrl: string): string {
 }
 
 const COLOR = {
-  ink: '#0D181C',
-  red: '#E30613',
-  muted: '#4A5559',
+  ink: '#2a1810',
+  accent: '#9c5a0c',
+  muted: '#6b5a52',
 };
 const FONT = "Inter, Arial, Helvetica, sans-serif";
 
@@ -96,11 +96,11 @@ function layout(title: string, content: string): string {
         <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width: 100%; max-width: 600px;">
           <tr>
             <td align="center" style="padding: 40px 24px 32px 24px;">
-              <span style="display: block; font-size: 28px; font-weight: 800; color: ${COLOR.red};">Amigo Chocolate</span>
+              <span style="display: block; font-size: 28px; font-weight: 800; color: ${COLOR.accent};">Amigo Chocolate</span>
             </td>
           </tr>
           <tr>
-            <td style="height: 4px; line-height: 4px; font-size: 0; background-color: ${COLOR.red};">&nbsp;</td>
+            <td style="height: 4px; line-height: 4px; font-size: 0; background-color: ${COLOR.accent};">&nbsp;</td>
           </tr>
           <tr>
             <td style="padding: 40px 32px 16px 32px;">
@@ -110,7 +110,7 @@ ${content}
           <tr>
             <td style="padding: 24px 32px 32px 32px;">
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-                <tr><td style="height: 4px; line-height: 4px; font-size: 0; background-color: ${COLOR.red};">&nbsp;</td></tr>
+                <tr><td style="height: 4px; line-height: 4px; font-size: 0; background-color: ${COLOR.accent};">&nbsp;</td></tr>
               </table>
               <p style="margin: 16px 0 0 0; font-size: 12px; line-height: 1.6; color: ${COLOR.muted}; text-align: center;">
                 Amigo Chocolate · Mensagem automática, não responda a este e-mail.
@@ -141,7 +141,7 @@ function button(href: string, label: string): string {
   return `
               <table role="presentation" cellpadding="0" cellspacing="0" style="margin: 8px auto 0 auto;">
                 <tr>
-                  <td align="center" style="background-color: ${COLOR.red}; border-radius: 6px;">
+                  <td align="center" style="background-color: ${COLOR.accent}; border-radius: 6px;">
                     <a href="${escapeHtml(href)}" style="display: inline-block; padding: 16px 36px; color: #ffffff; text-decoration: none; font-weight: 700; font-size: 16px; font-family: ${FONT};">${label}</a>
                   </td>
                 </tr>
@@ -166,7 +166,7 @@ export function buildDrawEmailHtml(data: DrawEmailData, publicUrl: string): stri
   ].join('');
 
   const content = `
-              <h1 style="margin: 0 0 12px 0; font-size: 26px; line-height: 1.25; font-weight: 800; color: ${COLOR.red}; text-align: center;">O sorteio do Amigo Chocolate foi realizado! 🎉</h1>
+              <h1 style="margin: 0 0 12px 0; font-size: 26px; line-height: 1.25; font-weight: 800; color: ${COLOR.accent}; text-align: center;">O sorteio do Amigo Chocolate foi realizado! 🎉</h1>
               <p style="margin: 0 0 32px 0; font-size: 16px; line-height: 1.6; color: ${COLOR.ink}; text-align: center;">Olá, ${escapeHtml(data.name)}! Quem não é louco por chocolate, é louco da cabeça.</p>
 
               <p style="margin: 0 0 4px 0; font-size: 15px; color: ${COLOR.muted}; text-align: center;">Seu amigo chocolate é</p>
@@ -189,7 +189,7 @@ ${button(link, 'Ver meu resultado')}
 
 export function buildTestEmailHtml(publicUrl: string): string {
   const content = `
-              <h1 style="margin: 0 0 12px 0; font-size: 26px; line-height: 1.25; font-weight: 800; color: ${COLOR.red}; text-align: center;">Olá! A configuração de envio está funcionando ✅</h1>
+              <h1 style="margin: 0 0 12px 0; font-size: 26px; line-height: 1.25; font-weight: 800; color: ${COLOR.accent}; text-align: center;">Olá! A configuração de envio está funcionando ✅</h1>
               <p style="margin: 0 0 32px 0; font-size: 16px; line-height: 1.6; color: ${COLOR.ink}; text-align: center;">Este é apenas um email de teste para verificar a configuração.</p>
 
 ${item('🎁', '<strong>Exemplo de resultado:</strong> João Silva')}

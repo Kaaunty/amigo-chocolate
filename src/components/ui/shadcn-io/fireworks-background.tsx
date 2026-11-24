@@ -50,11 +50,11 @@ export function FireworksBackground({
 
   // Cores, visíveis sobre fundo branco
   const colors = [
-    '#E30613', // Vermelho
-    '#FF4D5A', // Vermelho claro
-    '#A8040E', // Vermelho profundo
-    '#0D181C', // Preto
-    '#4A5559', // Cinza
+    '#9c5a0c', // Caramelo
+    '#e0a25a', // Caramelo claro
+    '#744207', // Caramelo escuro
+    '#2a1810', // Cacau
+    '#c98a5b', // Toffee
   ];
 
   useEffect(() => {

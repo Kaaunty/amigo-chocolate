@@ -45,15 +45,15 @@ const Fireworks = ({ active }: FireworksProps) => {
 
     const colors = [
       '#FFD700', // Gold
-      '#FF6B6B', // Red
-      '#4ECDC4', // Cyan
+      '#C98A5B', // Caramel
+      '#F2C078', // Honey
       '#45B7D1', // Blue
-      '#FFA07A', // Light Salmon
-      '#98D8C8', // Mint
+      '#8A5A3C', // Cocoa
+      '#E0A25A', // Light caramel
       '#F7DC6F', // Yellow
       '#BB8FCE', // Purple
-      '#FF1493', // Deep Pink
-      '#00FF00', // Lime
+      '#9c5a0c', // Caramel
+      '#D4A373', // Toffee
     ];
 
     const createFirework = () => {
