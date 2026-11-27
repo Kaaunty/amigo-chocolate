@@ -2,13 +2,12 @@ import axios from 'axios';
 import type Database from 'better-sqlite3';
 import { config } from './config.js';
 
+// Formato da API do Resend (POST /emails).
 export interface EmailPayload {
-  destinatario: string;
-  assunto: string;
-  body: string;
-  isHtml: true;
-  cc: string[];
-  bcc: string[];
+  from: string;
+  to: string[];
+  subject: string;
+  html: string;
 }
 
 // Cliente HTTP injetavel (testes sem rede).
@@ -23,6 +22,8 @@ export interface EmailClient {
 export interface EmailOptions {
   client?: EmailClient;
   apiUrl?: string;
+  apiKey?: string;
+  from?: string;
   publicUrl?: string;
   delayMs?: number;
 }
@@ -210,6 +211,8 @@ function resolve(opts: EmailOptions) {
   return {
     client: opts.client ?? defaultClient,
     apiUrl: opts.apiUrl ?? config.EMAIL_API_URL,
+    apiKey: opts.apiKey ?? config.EMAIL_API_KEY,
+    from: opts.from ?? config.EMAIL_FROM,
     publicUrl: opts.publicUrl ?? config.PUBLIC_URL,
     delayMs: opts.delayMs ?? config.EMAIL_SEND_DELAY_MS,
   };
@@ -241,10 +244,18 @@ async function post(
   subject: string,
   html: string,
 ): Promise<string> {
+  if (!opts.apiKey) throw new Error('EMAIL_API_KEY nao configurada');
+  if (!opts.from) throw new Error('EMAIL_FROM nao configurado');
   const response = await opts.client.post(
     opts.apiUrl,
-    { destinatario: to, assunto: subject, body: html, isHtml: true, cc: [], bcc: [] },
-    { headers: { 'Content-Type': 'application/json' }, timeout: 30_000 },
+    { from: opts.from, to: [to], subject, html },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${opts.apiKey}`,
+      },
+      timeout: 30_000,
+    },
   );
   return extractEmailId(response?.data);
 }

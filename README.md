@@ -16,7 +16,7 @@ Site interativo para realização de sorteio entre colaboradores no estilo "Amig
 - **Node.js + Express 5** - API REST
 - **SQLite** via **better-sqlite3** - Banco de dados em arquivo local
 - **JWT** (jsonwebtoken) - Autenticação do painel admin
-- Envio de e-mails por API HTTP externa (`EMAIL_API_URL`)
+- Envio de e-mails via Resend (`EMAIL_API_KEY` + `EMAIL_FROM`)
 - **Vitest** + **supertest** - Testes do backend
 
 ## 📋 Funcionalidades
@@ -53,7 +53,8 @@ Edite `server/.env` e defina, no mínimo:
 - `PUBLIC_URL` - URL pública do front (usada nos links enviados por e-mail)
 - `CORS_ORIGIN` - origem permitida no CORS (URL do front)
 - `TRUST_PROXY` - `true` apenas quando atrás de proxy reverso
-- `EMAIL_API_URL` - endpoint da API de envio de e-mails
+- `EMAIL_API_KEY` - chave de API do Resend
+- `EMAIL_FROM` - remetente, ex.: `Amigo Chocolate <no-reply@kfdev.com.br>` (o domínio precisa estar verificado no Resend)
 
 Outras variáveis (`PORT`, `DB_PATH`, `NODE_ENV`, `EMAIL_SEND_DELAY_MS`) estão descritas em `server/.env.example`. Nunca commite o `.env` com valores reais.
 
