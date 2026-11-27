@@ -24,30 +24,14 @@ export function createAdminActionsRouter(
 
   router.use(requireAdmin);
 
-  // Express 5 repassa rejeicoes de handlers async ao tratador de erro.
-  router.post('/draw', async (_req: Request, res: Response) => {
+  // O sorteio NAO envia e-mails: o envio e um passo manual separado (/send-emails).
+  router.post('/draw', (_req: Request, res: Response) => {
     const result = performDraw(db);
     if (!result.success) {
       res.status(400).json({ message: result.message });
       return;
     }
-
-    // Como no front: dispara o lote para todos com match; falha de e-mail nao falha o sorteio.
-    let sent = 0;
-    let failed = 0;
-    try {
-      const batch = await sendBatchEmails(db, emailOpts);
-      sent = batch.results.length;
-      failed = batch.errors.length;
-    } catch (error) {
-      console.error('Erro ao enviar emails apos o sorteio:', errorMessage(error));
-    }
-
-    res.json({
-      success: true,
-      message: result.message,
-      emailResult: { sent, failed },
-    });
+    res.json({ success: true, message: result.message });
   });
 
   router.post('/send-emails', async (_req: Request, res: Response) => {

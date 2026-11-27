@@ -127,7 +127,7 @@ O site fica em `http://localhost:3000` (ou em `WEB_PORT`). O compose não sobe s
 - **Dados:** o SQLite fica no volume `app-data` (`/data/app.db`) e sobrevive a `docker compose down`. **Não use** `down -v`, que apaga o volume. Para backup: `docker compose cp api:/data/app.db ./backup.db`.
 - **Proxy:** `TRUST_PROXY=true` já vem ativo no compose, pois o nginx fica à frente da API. Se houver outro proxy na frente (ex.: Coolify/Traefik), ajuste conforme a topologia.
 - **`PUBLIC_URL`:** use a URL pública real (com `https://`), pois ela entra nos links enviados por e-mail.
-- **Tempo de resposta do sorteio:** o nginx aceita até 300 s, porque o sorteio envia todos os e-mails antes de responder.
+- **Tempo de resposta do sorteio:** o nginx aceita até 300 s, porque o envio em lote dos e-mails responde só depois de enviar todos.
 
 ### Produção no Coolify (imagens prontas do GHCR)
 
@@ -207,8 +207,8 @@ Todas as rotas abaixo, exceto o login, exigem header `Authorization: Bearer <tok
 - `GET /api/admin/export` - Exportar CSV
 - `PUT /api/admin/config` - Atualizar número mínimo de participantes
 - `POST /api/admin/reset` - Reiniciar sorteio (mantém participantes, limpa pares)
-- `POST /api/admin/draw` - Realizar sorteio e disparar e-mails
-- `POST /api/admin/send-emails` - Reenviar e-mails em lote
+- `POST /api/admin/draw` - Realizar sorteio (não envia e-mails)
+- `POST /api/admin/send-emails` - Enviar (ou reenviar) e-mails em lote, passo manual
 - `POST /api/admin/test-email` - Enviar e-mail de teste
 
 ## 🎨 Design

@@ -57,24 +57,12 @@ describe('POST /api/admin/draw', () => {
     expect(calls).toHaveLength(0);
   });
 
-  it('sorteia e envia e-mails', async () => {
+  it('sorteia sem enviar e-mails', async () => {
     seed(5);
     const res = await request(app).post('/api/admin/draw').set('Authorization', `Bearer ${await token()}`);
     expect(res.status).toBe(200);
-    expect(res.body).toEqual({
-      success: true,
-      message: 'Sorteio realizado com sucesso',
-      emailResult: { sent: 5, failed: 0 },
-    });
-    expect(calls).toHaveLength(5);
-  });
-
-  it('falha de e-mail nao falha o sorteio', async () => {
-    seed(5);
-    failAll = true;
-    const res = await request(app).post('/api/admin/draw').set('Authorization', `Bearer ${await token()}`);
-    expect(res.status).toBe(200);
-    expect(res.body.emailResult).toEqual({ sent: 0, failed: 5 });
+    expect(res.body).toEqual({ success: true, message: 'Sorteio realizado com sucesso' });
+    expect(calls).toHaveLength(0);
     const n = db.prepare('SELECT COUNT(*) c FROM participants WHERE matched_with IS NOT NULL').get() as { c: number };
     expect(n.c).toBe(5);
   });

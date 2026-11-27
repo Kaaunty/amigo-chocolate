@@ -193,7 +193,7 @@ export const performDraw = async (): Promise<void> => {
   try {
     checkAdminAuth();
 
-    // O backend dispara os e-mails apos o sorteio; falha de e-mail nao falha o sorteio.
+    // O sorteio nao envia e-mails; o envio e um passo manual (sendBatchEmails).
     await api.post("/admin/draw");
   } catch (error: any) {
     return handleError(error);

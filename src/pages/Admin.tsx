@@ -105,7 +105,7 @@ const Admin = () => {
       !(await confirm({
         title: "Realizar sorteio",
         message:
-          "Tem certeza que deseja realizar o sorteio agora? Os emails serão enviados automaticamente para todos os participantes.",
+          "Tem certeza que deseja realizar o sorteio agora? Os e-mails não são enviados automaticamente: depois do sorteio, envie-os manualmente.",
         confirmLabel: "Realizar sorteio",
       }))
     ) {
@@ -120,7 +120,7 @@ const Admin = () => {
       await alert({
         title: "Sorteio realizado",
         message:
-          "Sorteio realizado com sucesso! Os emails foram enviados automaticamente para todos os participantes.",
+          "Sorteio realizado com sucesso! Agora envie os e-mails para os participantes.",
         tone: "success",
       });
     } catch (err) {
@@ -287,9 +287,9 @@ const Admin = () => {
 
   const subline = {
     cadastro: "Compartilhe o link da página inicial para as pessoas se cadastrarem.",
-    sorteio: `${total} participantes cadastrados. Os e-mails saem junto com o sorteio.`,
+    sorteio: `${total} participantes cadastrados. Os e-mails são enviados manualmente depois do sorteio.`,
     emails:
-      "O sorteio disparou os e-mails com o link de cada um. Se algum falhou ou não chegou, reenvie.",
+      "O sorteio foi feito, mas os e-mails ainda não são enviados automaticamente. Envie-os para que cada um receba seu link.",
   }[stage];
 
   const query = search.trim().toLowerCase();
@@ -376,7 +376,7 @@ const Admin = () => {
                 disabled={sendingEmails || participants.length === 0}
                 className="stage-action"
               >
-                {sendingEmails ? "Enviando e-mails..." : "Reenviar e-mails"}
+                {sendingEmails ? "Enviando e-mails..." : "Enviar e-mails"}
               </button>
             )}
           </div>
