@@ -1,6 +1,6 @@
 # Amigo Chocolate
 
-Site interativo para realização de sorteio entre colaboradores no estilo "Amigo Secreto" temático de chocolate.
+Site interativo para realização de sorteio de "Amigo Chocolate", no estilo Amigo Secreto temático de chocolate. Cada participante recebe por e-mail um link único com quem tirou, o chocolate preferido e o que a pessoa não gosta.
 
 ## 🚀 Tecnologias
 
@@ -16,13 +16,15 @@ Site interativo para realização de sorteio entre colaboradores no estilo "Amig
 - **Node.js + Express 5** - API REST
 - **SQLite** via **better-sqlite3** - Banco de dados em arquivo local
 - **JWT** (jsonwebtoken) - Autenticação do painel admin
-- Envio de e-mails via Resend (`EMAIL_API_KEY` + `EMAIL_FROM`)
+- **Resend** - Envio de e-mails (API HTTP via Axios, remetente `@kfdev.com.br`)
 - **Vitest** + **supertest** - Testes do backend
 
 ## 📋 Funcionalidades
 
 - ✅ Página inicial com cadastro de participantes
 - ✅ Geração de link único para cada participante
+- ✅ Cadastro opcional de chocolate preferido e do que não gosta, mostrado a quem tirou a pessoa
+- ✅ Envio do resultado por e-mail (Resend) e e-mail de teste pelo painel
 - ✅ Visualização restrita do resultado (somente com link válido)
 - ✅ Sorteio automático quando número mínimo é atingido
 - ✅ Página administrativa com autenticação
@@ -31,7 +33,7 @@ Site interativo para realização de sorteio entre colaboradores no estilo "Amig
 - ✅ Exportação de lista em CSV
 - ✅ Reiniciar sorteio (admin)
 - ✅ Página de regras
-- ✅ Design temático com cores marrom, dourado e creme
+- ✅ Design temático com a paleta cacau e caramelo
 - ✅ Layout responsivo
 
 ## 🛠️ Instalação
@@ -56,7 +58,18 @@ Edite `server/.env` e defina, no mínimo:
 - `EMAIL_API_KEY` - chave de API do Resend
 - `EMAIL_FROM` - remetente, ex.: `Amigo Chocolate <no-reply@kfdev.com.br>` (o domínio precisa estar verificado no Resend)
 
-Outras variáveis (`PORT`, `DB_PATH`, `NODE_ENV`, `EMAIL_SEND_DELAY_MS`) estão descritas em `server/.env.example`. Nunca commite o `.env` com valores reais.
+Outras variáveis (`PORT`, `DB_PATH`, `NODE_ENV`, `EMAIL_SEND_DELAY_MS`, `EMAIL_API_URL`) estão descritas em `server/.env.example`. Nunca commite o `.env` com valores reais.
+
+### E-mail (Resend)
+
+O envio usa o [Resend](https://resend.com). Para configurar:
+
+1. Em *Domains*, adicione o domínio do remetente (hoje `kfdev.com.br`) e cadastre no DNS os registros SPF/DKIM que o Resend mostrar. Espere o status *verified*.
+2. Em *API Keys*, crie uma chave com permissão *Sending access* e use-a em `EMAIL_API_KEY`.
+3. Defina `EMAIL_FROM` com um endereço do domínio verificado.
+4. Confirme enviando um e-mail de teste pelo painel admin (`POST /api/admin/test-email`).
+
+Sem `EMAIL_API_KEY` o envio falha com a mensagem `EMAIL_API_KEY nao configurada`; o resto do app funciona. Enquanto o domínio não estiver verificado, o Resend só permite enviar de `onboarding@resend.dev` e apenas para o e-mail da própria conta.
 
 3. Configure o frontend. Crie o `.env` na raiz:
 ```bash
@@ -109,7 +122,7 @@ cp .env.example .env     # defina ADMIN_PASSWORD, JWT_SECRET (mín. 16 caractere
 docker compose up -d --build
 ```
 
-O site fica em `http://localhost:3000` (ou em `WEB_PORT`). O compose não sobe sem `ADMIN_PASSWORD` e `JWT_SECRET`.
+O site fica em `http://localhost:3000` (ou em `WEB_PORT`). O compose não sobe sem `ADMIN_PASSWORD` e `JWT_SECRET`. Sem `EMAIL_API_KEY` o app sobe, mas o envio de e-mails falha.
 
 - **Dados:** o SQLite fica no volume `app-data` (`/data/app.db`) e sobrevive a `docker compose down`. **Não use** `down -v`, que apaga o volume. Para backup: `docker compose cp api:/data/app.db ./backup.db`.
 - **Proxy:** `TRUST_PROXY=true` já vem ativo no compose, pois o nginx fica à frente da API. Se houver outro proxy na frente (ex.: Coolify/Traefik), ajuste conforme a topologia.
@@ -122,11 +135,13 @@ Para não compilar nada no servidor de produção, o GitHub Actions (`.github/wo
 
 O Coolify usa o `docker-compose.prod.yml` (só `image:`, sem `build` e sem porta no host): o deploy apenas baixa as imagens.
 
-- **Coolify:** em *Docker Compose Location* use `/docker-compose.prod.yml`. Variáveis obrigatórias: `ADMIN_PASSWORD`, `JWT_SECRET` e `PUBLIC_URL`. O domínio vai no serviço `web` (porta 80).
+- **Coolify:** em *Docker Compose Location* use `/docker-compose.prod.yml`. Variáveis obrigatórias: `ADMIN_PASSWORD`, `JWT_SECRET`, `PUBLIC_URL` e `EMAIL_API_KEY`. Opcionais: `EMAIL_FROM` (padrão `Amigo Chocolate <no-reply@kfdev.com.br>`), `CORS_ORIGIN`, `EMAIL_SEND_DELAY_MS`, `IMAGE_TAG`. O domínio vai no serviço `web` (porta 80).
 - **Pacotes no GHCR:** os pacotes `amigo-chocolate-api` e `amigo-chocolate-web` herdam a visibilidade do repositório (público), então o servidor baixa as imagens sem login. Se o repositório virar privado, use `docker login ghcr.io` no servidor com um token `read:packages`.
 - **Rollback:** defina `IMAGE_TAG=sha-<commit>` no Coolify e faça o deploy para voltar a uma versão anterior.
 - **Deploy manual (de propósito):** o deploy automático por push fica **desligado** no Coolify. Ligado, ele reagiria ao push antes de o workflow publicar a imagem e subiria a versão anterior. Também evita guardar no GitHub um token do Coolify, que dá acesso ao servidor de produção.
 - **Fluxo:** merge na `main` → esperar o workflow *Docker* ficar verde (~1 min) → clicar em *Deploy* no Coolify (~1 min, sem build).
+- **Variáveis removidas:** se o Coolify ainda tiver `EMAIL_API_URL` apontando para outro serviço de e-mail, apague-a: ela tem prioridade sobre a URL padrão do Resend e faz o envio falhar com HTTP 400.
+- **Antes do sorteio:** confira em `min_participants` (painel admin) se o mínimo é compatível com o número de inscritos; abaixo dele o sorteio é recusado.
 
 ## 🧪 Testes
 
@@ -199,14 +214,16 @@ Todas as rotas abaixo, exceto o login, exigem header `Authorization: Bearer <tok
 ## 🎨 Design
 
 O design utiliza uma paleta temática:
-- **Marrom**: `#8B4513`, `#A0522D`, `#CD853F`, `#DEB887`
-- **Dourado**: `#D4AF37`, `#FFD700`
-- **Creme**: `#FFF8DC`, `#F5F5DC`
+- **Cacau** (marrons): `#2a1810`, `#5a3a2c`
+- **Caramelo** (dourados): `#9c5a0c`, `#744207`
+- **Creme**: `#f3ece5`, `#e6dbd1`
+- **Texto secundário**: `#6b5a52`
+
+As cores ficam como variáveis CSS (`--color-*`) em `src/styles`.
 
 ## 📝 Notas
 
 - O token do admin (JWT) é armazenado no localStorage do navegador
-- O logo deve ser adicionado em `public/logo.png`
 
 ## 📄 Licença
 
