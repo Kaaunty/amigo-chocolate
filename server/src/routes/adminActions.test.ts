@@ -22,7 +22,7 @@ beforeEach(() => {
       return { data: { id: 'x1' } };
     },
   };
-  app = createApp(db, { email: { client, delayMs: 0, publicUrl: 'https://front.test' } });
+  app = createApp(db, { email: { client, apiKey: 'chave-teste', from: 'Amigo Chocolate <no-reply@kfdev.com.br>', delayMs: 0, publicUrl: 'https://front.test' } });
 });
 afterEach(() => db.close());
 
@@ -111,7 +111,7 @@ describe('POST /api/admin/test-email', () => {
       .send({ email: 'ok@x.com' });
     expect(res.status).toBe(200);
     expect(res.body).toMatchObject({ success: true, emailId: 'x1' });
-    expect(calls[0].destinatario).toBe('ok@x.com');
+    expect(calls[0].to).toEqual(['ok@x.com']);
   });
 
   it('502 quando o provedor falha, sem vazar detalhes', async () => {

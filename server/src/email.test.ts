@@ -14,7 +14,7 @@ function fakeClient(failFor: string[] = []) {
   const client: EmailClient = {
     async post(url, payload) {
       calls.push({ url, payload });
-      if (failFor.includes(payload.destinatario)) throw new Error('boom ' + payload.destinatario);
+      if (failFor.includes(payload.to[0])) throw new Error('boom ' + payload.to[0]);
       return { data: { id: 'e-' + calls.length } };
     },
   };
@@ -24,6 +24,8 @@ function fakeClient(failFor: string[] = []) {
 const opts = (client: EmailClient) => ({
   client,
   apiUrl: 'http://email.test/enviar',
+  apiKey: 'chave-teste',
+  from: 'Amigo Chocolate <no-reply@kfdev.com.br>',
   publicUrl: 'https://front.test/',
   delayMs: 0,
 });
@@ -58,15 +60,15 @@ describe('sendBatchEmails', () => {
     const { client, calls } = fakeClient();
     const r = await sendBatchEmails(db, opts(client));
     expect(r.success).toBe(true);
-    const toAna = calls.find((c) => c.payload.destinatario === 'ana@x.com')!;
+    const toAna = calls.find((c) => c.payload.to[0] === 'ana@x.com')!;
     expect(toAna.url).toBe('http://email.test/enviar');
-    expect(toAna.payload.assunto).toBe(DRAW_SUBJECT);
-    expect(toAna.payload).toMatchObject({ isHtml: true, cc: [], bcc: [] });
-    expect(toAna.payload.body).toContain('Olá, Ana &lt;b&gt;!');
-    expect(toAna.payload.body).not.toContain('<script>');
-    expect(toAna.payload.body).toContain('&lt;script&gt;alert(1)&lt;/script&gt;');
-    expect(toAna.payload.body).toContain('&quot;x&quot; &amp; &#39;y&#39;');
-    expect(toAna.payload.body).toContain('https://front.test/participante/tok-a');
+    expect(toAna.payload.subject).toBe(DRAW_SUBJECT);
+    expect(toAna.payload.from).toBe('Amigo Chocolate <no-reply@kfdev.com.br>');
+    expect(toAna.payload.html).toContain('Olá, Ana &lt;b&gt;!');
+    expect(toAna.payload.html).not.toContain('<script>');
+    expect(toAna.payload.html).toContain('&lt;script&gt;alert(1)&lt;/script&gt;');
+    expect(toAna.payload.html).toContain('&quot;x&quot; &amp; &#39;y&#39;');
+    expect(toAna.payload.html).toContain('https://front.test/participante/tok-a');
     db.close();
   });
 
@@ -103,12 +105,19 @@ describe('sendBatchEmails', () => {
 });
 
 describe('testEmail', () => {
+  it('sem EMAIL_API_KEY falha com mensagem clara', async () => {
+    const { client } = fakeClient();
+    await expect(testEmail('t@x.com', { ...opts(client), apiKey: '' })).rejects.toThrow(
+      'EMAIL_API_KEY nao configurada',
+    );
+  });
+
   it('envia template de teste', async () => {
     const { client, calls } = fakeClient();
     const r = await testEmail('t@x.com', opts(client));
     expect(r).toMatchObject({ success: true, emailId: 'e-1' });
-    expect(calls[0].payload.destinatario).toBe('t@x.com');
-    expect(calls[0].payload.assunto).toBe('🧪 Teste - Amigo Chocolate');
-    expect(calls[0].payload.body).toContain('href="https://front.test"');
+    expect(calls[0].payload.to).toEqual(['t@x.com']);
+    expect(calls[0].payload.subject).toBe('🧪 Teste - Amigo Chocolate');
+    expect(calls[0].payload.html).toContain('href="https://front.test"');
   });
 });

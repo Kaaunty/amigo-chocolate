@@ -51,9 +51,10 @@ export const config = {
   ADMIN_PASSWORD: adminPassword as string,
   JWT_SECRET: jwtSecret as string,
   PUBLIC_URL: process.env.PUBLIC_URL ?? 'http://localhost:3000',
-  EMAIL_API_URL:
-    process.env.EMAIL_API_URL ??
-    'https://api-erp.rainhadassete.com.br/Email/enviar',
+  // Resend (https://resend.com): dominio verificado + chave de API.
+  EMAIL_API_URL: process.env.EMAIL_API_URL?.trim() || 'https://api.resend.com/emails',
+  EMAIL_API_KEY: process.env.EMAIL_API_KEY?.trim() ?? '',
+  EMAIL_FROM: process.env.EMAIL_FROM?.trim() || 'Amigo Chocolate <no-reply@kfdev.com.br>',
   EMAIL_SEND_DELAY_MS: Math.max(0, Number(process.env.EMAIL_SEND_DELAY_MS) || 0),
   TRUST_PROXY: ['1', 'true'].includes((process.env.TRUST_PROXY ?? '').trim().toLowerCase()),
   CORS_ORIGIN: process.env.CORS_ORIGIN ?? 'http://localhost:3000',
